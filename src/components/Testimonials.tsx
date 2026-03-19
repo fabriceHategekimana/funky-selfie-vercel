@@ -1,21 +1,18 @@
 const testimonials = [
   {
     quote:
-      "Notre mariage en Suisse a été rendu encore plus inoubliable grâce au photobooth Funk Selfie. Nos invités ont adoré se prendre en photo et se laisser aller à leur créativité.",
-    author: "Client Mariage",
-    event: "Mariage",
+      "FunkySelfie a géré notre soirée annuelle de A à Z. Installation, animation, reprise : nous n'avons eu à nous occuper de rien. Nos 200 collaborateurs en parlent encore.",
+    author: "Responsable Communication, groupe industriel, Genève",
   },
   {
     quote:
-      "Nous avons loué le photobooth Funk Selfie pour notre salon professionnel. Cela a été un excellent moyen d'attirer l'attention des visiteurs et de les engager avec notre marque.",
-    author: "Client Entreprise",
-    event: "Salon professionnel",
+      "Le photobooth aux couleurs de notre marque a attiré un trafic remarquable sur notre stand. Les photos brandées ont été partagées massivement sur LinkedIn dès le soir même.",
+    author: "Directeur Marketing, PME tech, Lausanne",
   },
   {
     quote:
-      "La qualité des photos était excellente. La livraison a été rapide et le personnel était sympathique et professionnel. Mes invités ont adoré !",
-    author: "Client Anniversaire",
-    event: "Anniversaire",
+      "Qualité impeccable, équipe ponctuelle et souriante. Nos invités ont adoré et nous avons récupéré des centaines de photos via la galerie. Un sans-faute.",
+    author: "Couple marié, Fribourg",
   },
 ];
 
@@ -23,31 +20,32 @@ export default function Testimonials() {
   return (
     <section
       id="temoignages"
-      className="py-16 px-8"
+      className="bg-bg-light py-12 md:py-20 px-4 md:px-8"
       aria-label="Témoignages de nos clients"
     >
-      <h2 className="text-center text-3xl md:text-4xl font-bold mb-16 text-dark px-8 mx-16">
-        Ce que disent nos clients
-      </h2>
-      <div className="h-8"></div>
-      <div className="grid gap-8 mt-12 px-8 mx-16 justify-items-center justify-center pt-24" style={{ gridTemplateColumns: "repeat(3, 357px)" }}>
-        {testimonials.map((testimonial) => (
-          <article
-            key={testimonial.author}
-            className="bg-white p-8 rounded-xl shadow-lg border-l-4 border-primary max-w-[357px]"
-          >
-            <blockquote>
-              <p className="italic mb-4 text-text-light leading-relaxed">
-                &ldquo;{testimonial.quote}&rdquo;
-              </p>
-            </blockquote>
-            <footer>
-              <cite className="font-bold text-primary not-italic">
-                - {testimonial.author}
-              </cite>
-            </footer>
-          </article>
-        ))}
+      <div className="max-w-7xl mx-auto">
+        <h2 className="text-center text-2xl md:text-4xl font-bold mb-10 md:mb-16 text-dark">
+          Ils nous ont fait confiance
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          {testimonials.map((testimonial) => (
+            <article
+              key={testimonial.author}
+              className="bg-white p-7 md:p-10 rounded-xl shadow-lg border-l-4 border-primary"
+            >
+              <blockquote>
+                <p className="italic mb-5 text-text-light leading-loose">
+                  &ldquo;{testimonial.quote}&rdquo;
+                </p>
+              </blockquote>
+              <footer>
+                <cite className="font-bold text-primary not-italic text-sm">
+                  — {testimonial.author}
+                </cite>
+              </footer>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   );

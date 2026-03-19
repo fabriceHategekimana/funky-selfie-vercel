@@ -1,52 +1,46 @@
 const features = [
   {
-    icon: "\uD83D\uDCF8",
-    title: "Interface Intuitive",
+    title: "Zéro effort de votre côté",
     description:
-      "Notre interface tactile vous guide à chaque étape, de la prise de photos à l'impression instantanée.",
+      "Livraison, installation, opération et reprise : FunkySelfie gère l'intégralité de la logistique. Vous déléguez, vous profitez. Vos invités aussi.",
   },
   {
-    icon: "\uD83C\uDFA8",
-    title: "Personnalisation",
+    title: "Votre identité visuelle, en vedette",
     description:
-      "Personnalisez chaque séance photo selon votre style et votre thème d'événement.",
+      "Cadres, overlays, fond de décor et écran d'accueil aux couleurs de votre charte graphique. Chaque photo devient un ambassadeur de votre marque — et circule bien au-delà de la salle.",
   },
   {
-    icon: "\uD83C\uDF10",
-    title: "Galerie en Ligne",
+    title: "Un souvenir partagé en un clic",
     description:
-      "Accédez à toutes vos photos via une galerie en ligne sécurisée.",
+      "Impression instantanée sur place, galerie en ligne sécurisée, envoi par SMS ou email. Vos invités repartent avec leur photo. Votre marque les accompagne.",
   },
 ];
 
 export default function Features() {
   return (
-    <section className="py-16 px-8 flex flex-col items-center" aria-label="Avantages FunkySelfie">
-      <h2 className="w-full text-center text-3xl md:text-4xl font-bold mb-16 text-dark px-8 mx-16">
-        Pourquoi choisir FunkySelfie ?
-      </h2>
-      <div className="h-8"></div>
-      <div className="grid gap-8 justify-items-center justify-center px-8 mx-16 pt-24" style={{ gridTemplateColumns: "repeat(3, 357px)" }}>
-        {features.map((feature) => (
+    <section
+      className="py-12 md:py-20 px-4 md:px-8"
+      aria-label="Ce que FunkySelfie apporte à votre événement"
+    >
+      <div className="max-w-7xl mx-auto">
+        <h2 className="text-center text-2xl md:text-4xl font-bold mb-10 md:mb-16 text-dark">
+          Ce que FunkySelfie apporte à votre événement
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          {features.map((feature) => (
             <article
               key={feature.title}
-              className="bg-white p-8 rounded-2xl shadow-lg transition-transform duration-300 hover:-translate-y-2 max-w-[357px]"
+              className="bg-white p-7 md:p-10 rounded-2xl shadow-lg transition-transform duration-300 hover:-translate-y-2"
             >
-            <div
-              className="w-full h-[200px] rounded-xl mb-6 flex items-center justify-center text-6xl"
-              style={{
-                background: "linear-gradient(135deg, #36949e 0%, #bd3ca1 100%)",
-              }}
-              aria-hidden="true"
-            >
-              {feature.icon}
-            </div>
-            <h3 className="text-xl font-bold mb-4 text-primary">
-              {feature.title}
-            </h3>
-            <p className="text-text-light">{feature.description}</p>
-          </article>
-        ))}
+              <h3 className="text-xl font-bold mb-4 text-primary">
+                {feature.title}
+              </h3>
+              <p className="text-text-light leading-relaxed">
+                {feature.description}
+              </p>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   );

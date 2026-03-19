@@ -1,31 +1,36 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { JsonLd } from "@/components/JsonLd";
 
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://funkyselfie.ch"),
+  metadataBase: new URL("https://funky-selfie.ch"),
   title: {
-    default: "FunkySelfie | Location de Photobooth en Suisse",
+    default: "FunkySelfie | Location Photobooth Corporate — Suisse",
     template: "%s | FunkySelfie",
   },
   description:
-    "FunkySelfie propose la location de photobooth en Suisse pour vos mariages, anniversaires, événements d'entreprise et fêtes privées. Créez des souvenirs inoubliables avec notre photobooth personnalisable.",
+    "Louez un photobooth haut de gamme pour vos événements corporate en Suisse. Personnalisé à vos couleurs, livré et installé partout. Devis gratuit sous 24h.",
   keywords: [
-    "photobooth",
-    "location photobooth",
-    "photobooth Suisse",
-    "photo booth mariage",
-    "photobooth entreprise",
-    "photobooth anniversaire",
+    "photobooth corporate",
     "location photobooth Suisse",
-    "photomaton mariage",
-    "animation photo événement",
+    "photobooth événement entreprise",
+    "photobooth corporate Suisse",
+    "location photobooth Genève",
+    "location photobooth Lausanne",
+    "location photobooth Zurich",
+    "animation photobooth team building",
+    "prix photobooth corporate Suisse",
+    "louer photobooth séminaire entreprise",
+    "photobooth mariage Suisse",
     "FunkySelfie",
-    "photobooth Lausanne",
-    "photobooth Genève",
-    "photobooth Zurich",
   ],
   authors: [{ name: "FunkySelfie" }],
   creator: "FunkySelfie",
@@ -44,29 +49,29 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "fr_CH",
-    url: "https://funkyselfie.ch",
+    url: "https://funky-selfie.ch",
     siteName: "FunkySelfie",
-    title: "FunkySelfie | Location de Photobooth en Suisse",
+    title: "FunkySelfie | Photobooth Corporate Clé en Main — Suisse",
     description:
-      "Location de photobooth en Suisse pour mariages, anniversaires, événements d'entreprise et fêtes privées. Créez des souvenirs inoubliables !",
+      "Le photobooth corporate qui renforce votre marque. Service intégral partout en Suisse. On s'occupe de tout.",
     images: [
       {
         url: "/images/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "FunkySelfie - Location de Photobooth en Suisse",
+        alt: "FunkySelfie - Location de Photobooth Corporate en Suisse",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "FunkySelfie | Location de Photobooth en Suisse",
+    title: "FunkySelfie | Photobooth Corporate Clé en Main — Suisse",
     description:
-      "Location de photobooth en Suisse pour mariages, anniversaires et événements. Créez des souvenirs inoubliables !",
+      "Le photobooth corporate qui renforce votre marque. Service intégral partout en Suisse. On s'occupe de tout.",
     images: ["/images/og-image.jpg"],
   },
   alternates: {
-    canonical: "https://funkyselfie.ch",
+    canonical: "https://funky-selfie.ch",
   },
   icons: {
     icon: "/images/logo_square.png",
@@ -81,7 +86,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
-      <body className="antialiased">
+      <head>
+        <link
+          href="https://calendar.google.com/calendar/scheduling-button-script.css"
+          rel="stylesheet"
+        />
+      </head>
+      <body className={`${inter.className} antialiased`}>
         <JsonLd />
         <Header />
         <main>{children}</main>

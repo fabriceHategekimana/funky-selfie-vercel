@@ -6,30 +6,23 @@ import Link from "next/link";
 
 const navLinks = [
   { href: "#accueil", label: "Accueil" },
-  { href: "#univers-photo", label: "Notre univers photo" },
+  { href: "#offres", label: "Nos Offres" },
+  { href: "#services", label: "Services" },
   { href: "#temoignages", label: "Témoignages" },
-  { href: "#contact", label: "Réservation" },
+  { href: "#faq", label: "FAQ" },
+  { href: "#contact", label: "Devis gratuit" },
 ];
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    const target = document.querySelector(href);
-    if (target) {
-      target.scrollIntoView({ behavior: "smooth" });
-    }
-    setMenuOpen(false);
-  };
-
   return (
     <header className="bg-white text-dark shadow-md sticky top-0 z-50">
-      <nav className="max-w-[1200px] mx-auto flex justify-between items-center px-8 py-4">
+      <nav className="max-w-7xl mx-auto flex justify-between items-center px-4 md:px-8 py-4">
         <Link href="/" aria-label="FunkySelfie - Accueil">
           <Image
             src="/images/logo.png"
-            alt="FunkySelfie - Location de Photobooth en Suisse"
+            alt="FunkySelfie - Location de Photobooth Corporate en Suisse"
             width={300}
             height={100}
             className="w-[200px] md:w-[300px] h-auto"
@@ -43,8 +36,11 @@ export default function Header() {
             <li key={link.href}>
               <a
                 href={link.href}
-                onClick={(e) => handleLinkClick(e, link.href)}
-                className="text-dark no-underline font-medium transition-colors duration-300 hover:text-primary"
+                className={`no-underline font-medium transition-colors duration-300 ${
+                  link.href === "#contact"
+                    ? "bg-primary text-white px-5 py-2 rounded-full hover:bg-primary-dark"
+                    : "text-dark hover:text-primary"
+                }`}
               >
                 {link.label}
               </a>
@@ -58,6 +54,7 @@ export default function Header() {
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}
           aria-expanded={menuOpen}
+          aria-controls="mobile-menu"
         >
           {menuOpen ? "\u2715" : "\u2630"}
         </button>
@@ -65,12 +62,15 @@ export default function Header() {
 
       {/* Mobile Navigation */}
       {menuOpen && (
-        <ul className="md:hidden flex flex-col list-none bg-white px-8 py-4 shadow-lg">
+        <ul
+          id="mobile-menu"
+          className="md:hidden flex flex-col list-none bg-white px-4 py-4 shadow-lg"
+        >
           {navLinks.map((link) => (
             <li key={link.href} className="py-2">
               <a
                 href={link.href}
-                onClick={(e) => handleLinkClick(e, link.href)}
+                onClick={() => setMenuOpen(false)}
                 className="text-dark no-underline font-medium transition-colors duration-300 hover:text-primary block"
               >
                 {link.label}
