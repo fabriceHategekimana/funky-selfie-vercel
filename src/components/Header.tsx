@@ -6,11 +6,11 @@ import Link from "next/link";
 
 const navLinks = [
   { href: "#accueil", label: "Accueil" },
-  { href: "#offres", label: "Nos Offres" },
+  { href: "#configurateur", label: "Nos Formules" },
   { href: "#services", label: "Services" },
   { href: "#temoignages", label: "Témoignages" },
   { href: "#faq", label: "FAQ" },
-  { href: "#contact", label: "Devis gratuit" },
+  { href: "#configurateur", label: "Réserver" },
 ];
 
 export default function Header() {
@@ -33,11 +33,11 @@ export default function Header() {
         {/* Desktop Navigation */}
         <ul className="hidden md:flex list-none gap-8">
           {navLinks.map((link) => (
-            <li key={link.href}>
+            <li key={link.label}>
               <a
                 href={link.href}
                 className={`no-underline font-medium transition-colors duration-300 ${
-                  link.href === "#contact"
+                  link.label === "Réserver"
                     ? "bg-primary text-white px-5 py-2 rounded-full hover:bg-primary-dark"
                     : "text-dark hover:text-primary"
                 }`}
@@ -67,7 +67,7 @@ export default function Header() {
           className="md:hidden flex flex-col list-none bg-white px-4 py-4 shadow-lg"
         >
           {navLinks.map((link) => (
-            <li key={link.href} className="py-2">
+            <li key={link.label} className="py-2">
               <a
                 href={link.href}
                 onClick={() => setMenuOpen(false)}

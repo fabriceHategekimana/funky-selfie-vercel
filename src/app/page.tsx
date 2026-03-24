@@ -1,6 +1,6 @@
 import HeroCarousel from "@/components/HeroCarousel";
 import Features from "@/components/Features";
-import Offers from "@/components/Offers";
+import Configurator from "@/components/Configurator";
 import Services from "@/components/Services";
 import Testimonials from "@/components/Testimonials";
 import Faq from "@/components/Faq";
@@ -11,7 +11,7 @@ export default function Home() {
     <>
       <HeroCarousel />
       <Features />
-      <Offers />
+      <Configurator />
       <Services />
       <Testimonials />
       <Faq />
