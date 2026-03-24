@@ -130,7 +130,7 @@ export default function Configurator() {
   const [showForm, setShowForm] = useState(false);
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
-  const [formData, setFormData] = useState({ date: "", region: "", nom: "" });
+  const [formData, setFormData] = useState({ date: "", region: "", nom: "", email: "", telephone: "" });
 
   const pkg = packages.find((p) => p.id === selectedPkg) ?? null;
   const optsTotal = selectedOpts.reduce((sum, id) => {
@@ -181,6 +181,8 @@ export default function Configurator() {
           date: formData.date,
           region: formData.region,
           nom: formData.nom,
+          email: formData.email,
+          telephone: formData.telephone,
         }),
       });
     } finally {
@@ -435,6 +437,40 @@ export default function Configurator() {
                   value={formData.nom}
                   onChange={(e) => setFormData((d) => ({ ...d, nom: e.target.value }))}
                   placeholder="Ex : Marie Dupont"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-primary"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="client-email"
+                  className="text-sm font-medium text-dark block mb-1"
+                >
+                  Votre email *
+                </label>
+                <input
+                  id="client-email"
+                  type="email"
+                  required
+                  value={formData.email}
+                  onChange={(e) => setFormData((d) => ({ ...d, email: e.target.value }))}
+                  placeholder="Ex : marie@exemple.ch"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-primary"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="client-telephone"
+                  className="text-sm font-medium text-dark block mb-1"
+                >
+                  Votre téléphone{" "}
+                  <span className="font-normal text-gray-400">(optionnel)</span>
+                </label>
+                <input
+                  id="client-telephone"
+                  type="tel"
+                  value={formData.telephone}
+                  onChange={(e) => setFormData((d) => ({ ...d, telephone: e.target.value }))}
+                  placeholder="Ex : +41 79 123 45 67"
                   className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-primary"
                 />
               </div>

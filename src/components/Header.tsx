@@ -18,14 +18,14 @@ export default function Header() {
 
   return (
     <header className="bg-white text-dark shadow-md sticky top-0 z-50">
-      <nav className="max-w-7xl mx-auto flex justify-between items-center px-4 md:px-8 py-4">
+      <nav className="max-w-7xl mx-auto flex justify-between items-center px-4 md:px-8 py-2">
         <Link href="/" aria-label="FunkySelfie - Accueil">
           <Image
             src="/images/logo.png"
             alt="FunkySelfie - Location de Photobooth Corporate en Suisse"
-            width={300}
-            height={100}
-            className="w-[200px] md:w-[300px] h-auto"
+            width={900}
+            height={3000}
+            className="h-20 md:h-25 w-auto"
             priority
           />
         </Link>

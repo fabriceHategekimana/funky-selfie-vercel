@@ -10,7 +10,9 @@ Message photo: ${data.message}
 Total estimé: ${data.total}
 Date de l'événement: ${data.date}
 Région: ${data.region}
-Nom: ${data.nom}
+Nom: ${data.nom || "—"}
+Email: ${data.email}
+Téléphone: ${data.telephone || "—"}
 
 Envoyé depuis funkyselfie.ch`;
 
