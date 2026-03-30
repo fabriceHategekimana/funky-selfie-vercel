@@ -1,7 +1,20 @@
-import type {StructureResolver} from 'sanity/structure'
+import type { StructureResolver } from "sanity/structure";
+import { HomeIcon } from "@sanity/icons";
 
-// https://www.sanity.io/docs/structure-builder-cheat-sheet
 export const structure: StructureResolver = (S) =>
   S.list()
-    .title('Content')
-    .items(S.documentTypeListItems())
+    .title("Contenu")
+    .items([
+      S.listItem()
+        .title("Section Hero")
+        .icon(HomeIcon)
+        .child(
+          S.document()
+            .schemaType("heroSection")
+            .documentId("a6d56e4f-a429-4e53-a7b9-bb4640fbb087")
+        ),
+      S.divider(),
+      ...S.documentTypeListItems().filter(
+        (item) => item.getId() !== "heroSection"
+      ),
+    ]);

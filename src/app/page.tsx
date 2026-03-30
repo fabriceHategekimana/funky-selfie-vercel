@@ -1,4 +1,4 @@
-import HeroCarousel from "@/components/HeroCarousel";
+import Hero from "@/components/Hero";
 import Features from "@/components/Features";
 import Configurator from "@/components/Configurator";
 import Services from "@/components/Services";
@@ -9,7 +9,7 @@ import Contact from "@/components/Contact";
 export default function Home() {
   return (
     <>
-      <HeroCarousel />
+      <Hero />
       <Features />
       <Configurator />
       <Services />
