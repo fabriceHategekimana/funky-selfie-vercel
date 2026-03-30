@@ -1,0 +1,9 @@
+import { defineQuery } from "next-sanity";
+
+export const testimonialsQuery = defineQuery(
+  `*[_type == "testimonial"] | order(_createdAt asc) { _id, quote, author }`
+);
+
+export const faqQuery = defineQuery(
+  `*[_type == "faqItem"] | order(order asc) { _id, question, answer }`
+);

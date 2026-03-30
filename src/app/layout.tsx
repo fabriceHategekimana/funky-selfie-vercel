@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { JsonLd } from "@/components/JsonLd";
+import { SanityLive } from "@/sanity/lib/live";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -97,6 +98,7 @@ export default function RootLayout({
         <Header />
         <main>{children}</main>
         <Footer />
+        <SanityLive />
       </body>
     </html>
   );

@@ -29,7 +29,11 @@ No test framework is configured. Validate changes with `npm run build` (catches 
 
 Single-page site: all sections are composed in `src/app/page.tsx`. The layout (`src/app/layout.tsx`) handles metadata/SEO and wraps with `Header`/`Footer`.
 
-Components are **server components by default**. Only add `"use client"` when the component uses browser APIs, hooks, or event handlers. Current client components: `Header.tsx` (hamburger nav), `HeroCarousel.tsx` (image carousel), `Contact.tsx` (Google Calendar booking widget).
+Components are **server components by default**. Only add `"use client"` when the component uses browser APIs, hooks, or event handlers. Current client components: `Header.tsx` (hamburger nav), `HeroCarousel.tsx` (image carousel), `Contact.tsx` (Google Calendar booking widget), `Configurator.tsx` (interactive quote builder).
+
+### API routes
+
+`src/app/api/send-quote/route.ts` — receives quote form submissions and sends them via [Resend](https://resend.com). Requires the `RESEND_API_KEY` environment variable; if absent, the route returns `{ ok: true }` without sending.
 
 ### Key conventions
 

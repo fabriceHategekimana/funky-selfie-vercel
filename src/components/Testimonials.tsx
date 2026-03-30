@@ -1,22 +1,11 @@
-const testimonials = [
-  {
-    quote:
-      "FunkySelfie a géré notre soirée annuelle de A à Z. Installation, animation, reprise : nous n'avons eu à nous occuper de rien. Nos 200 collaborateurs en parlent encore.",
-    author: "Responsable Communication, groupe industriel, Genève",
-  },
-  {
-    quote:
-      "Le photobooth aux couleurs de notre marque a attiré un trafic remarquable sur notre stand. Les photos brandées ont été partagées massivement sur LinkedIn dès le soir même.",
-    author: "Directeur Marketing, PME tech, Lausanne",
-  },
-  {
-    quote:
-      "Qualité impeccable, équipe ponctuelle et souriante. Nos invités ont adoré et nous avons récupéré des centaines de photos via la galerie. Un sans-faute.",
-    author: "Couple marié, Fribourg",
-  },
-];
+import { sanityFetch } from "@/sanity/lib/live";
+import { testimonialsQuery } from "@/sanity/lib/queries";
 
-export default function Testimonials() {
+type Testimonial = { _id: string; quote: string | null; author: string | null };
+
+export default async function Testimonials() {
+  const { data: testimonials } = await sanityFetch({ query: testimonialsQuery }) as { data: Testimonial[] };
+
   return (
     <section
       id="temoignages"
@@ -30,7 +19,7 @@ export default function Testimonials() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {testimonials.map((testimonial) => (
             <article
-              key={testimonial.author}
+              key={testimonial._id}
               className="bg-white p-7 md:p-10 rounded-xl shadow-lg border-l-4 border-primary"
             >
               <blockquote>
