@@ -1,8 +1,9 @@
 import Hero from "@/components/Hero";
 import Features from "@/components/Features";
+import CardsMockup from "@/components/CardsMockup";
+import ArcPhotobooth from "@/components/ArcPhotobooth";
 import Configurator from "@/components/Configurator";
 import Services from "@/components/Services";
-import Testimonials from "@/components/Testimonials";
 import Faq from "@/components/Faq";
 import Contact from "@/components/Contact";
 
@@ -11,9 +12,10 @@ export default function Home() {
     <>
       <Hero />
       <Features />
+      <CardsMockup />
+      <ArcPhotobooth />
       <Configurator />
       <Services />
-      <Testimonials />
       <Faq />
       <Contact />
     </>
