@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "section": "node scripts/html-to-section.mjs"
   },
   "dependencies": {
     "@sanity/image-url": "^1.2.0",

@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { JsonLd } from "@/components/JsonLd";
 import { SanityLive } from "@/sanity/lib/live";
+import StyledComponentsRegistry from "@/lib/StyledComponentsRegistry";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -75,8 +76,14 @@ export const metadata: Metadata = {
     canonical: "https://funky-selfie.ch",
   },
   icons: {
-    icon: "/images/logo_square.png",
-    apple: "/images/logo_square.png",
+    icon: [
+      { url: "/images/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/images/favicon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/images/favicon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      { url: "/images/favicon-512.png", sizes: "512x512", type: "image/png" },
+    ],
   },
 };
 
@@ -94,11 +101,13 @@ export default function RootLayout({
         />
       </head>
       <body className={`${inter.className} antialiased`}>
-        <JsonLd />
-        <Header />
-        <main>{children}</main>
-        <Footer />
-        <SanityLive />
+        <StyledComponentsRegistry>
+          <JsonLd />
+          <Header />
+          <main>{children}</main>
+          <Footer />
+          <SanityLive />
+        </StyledComponentsRegistry>
       </body>
     </html>
   );
