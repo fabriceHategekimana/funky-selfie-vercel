@@ -169,7 +169,7 @@ export default function Configurator() {
     e.preventDefault();
     setSending(true);
     try {
-      await fetch("/api/send-quote", {
+      const res = await fetch("/api/send-quote", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -185,8 +185,11 @@ export default function Configurator() {
           telephone: formData.telephone,
         }),
       });
-    } finally {
+      if (!res.ok) throw new Error("Envoi échoué");
       setSent(true);
+    } catch {
+      alert("Une erreur est survenue lors de l'envoi. Veuillez nous contacter directement par email.");
+    } finally {
       setSending(false);
     }
   };

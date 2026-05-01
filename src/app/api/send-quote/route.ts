@@ -17,20 +17,29 @@ Téléphone: ${data.telephone || "—"}
 Envoyé depuis funkyselfie.ch`;
 
   const apiKey = process.env.RESEND_API_KEY;
-  if (apiKey) {
-    await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        from: "devis@funkyselfie.ch",
-        to: ["hello@funkyselfie.ch"],
-        subject: "Nouvelle demande de devis FunkySelfie",
-        text,
-      }),
-    });
+  if (!apiKey) {
+    console.warn("[send-quote] RESEND_API_KEY non définie — email non envoyé");
+    return NextResponse.json({ ok: false, error: "Configuration manquante" }, { status: 500 });
+  }
+
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: "devis@funkyselfie.ch",
+      to: ["deborah.makambo@yahoo.fr"],
+      subject: "Nouvelle demande de devis FunkySelfie",
+      text,
+    }),
+  });
+
+  if (!res.ok) {
+    const body = await res.text();
+    console.error("[send-quote] Erreur Resend", res.status, body);
+    return NextResponse.json({ ok: false, error: body }, { status: 500 });
   }
 
   return NextResponse.json({ ok: true });
