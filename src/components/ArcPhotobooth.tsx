@@ -234,7 +234,98 @@ const Styled = styled.div`
     margin-bottom: 20px;
     font-style: italic;
   }
+
+  /* ── Mobile : liste verticale ── */
+  .steps-mobile {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .section {
+      padding: 50px 20px;
+    }
+
+    .arc-wrapper {
+      display: none;
+    }
+
+    .pause-hint {
+      display: none;
+    }
+
+    .steps-mobile {
+      display: block;
+      margin-bottom: 30px;
+    }
+
+    .mobile-photo {
+      width: 90px;
+      height: 116px;
+      border-radius: 16px;
+      overflow: hidden;
+      margin: 0 auto 28px;
+      box-shadow: 0 16px 48px rgba(74,171,170,0.25);
+      border: 3px solid #E0F7FA;
+      position: relative;
+    }
+
+    .step-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      text-align: left;
+      margin-bottom: 12px;
+      background: #f9fdfd;
+      border-radius: 14px;
+      padding: 14px 16px;
+      border: 1px solid #E0F7FA;
+    }
+
+    .step-circle {
+      width: 50px;
+      height: 50px;
+      min-width: 50px;
+      border-radius: 50%;
+      background: white;
+      border: 2px solid #4AABAA;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(74,171,170,0.15);
+    }
+
+    .step-circle.mag {
+      border-color: #B03FAA;
+      box-shadow: 0 2px 8px rgba(176,63,170,0.15);
+    }
+
+    .step-content { flex: 1; }
+
+    .step-title {
+      font-size: 14px;
+      font-weight: bold;
+      color: #1A1A2E;
+      margin-bottom: 2px;
+    }
+
+    .step-desc {
+      font-size: 12px;
+      color: #aaa;
+      line-height: 1.4;
+    }
+  }
 `;
+
+//main
+const STEPS = [
+  { num: "01", icon: "📦", title: "Choisissez votre formule", desc: "Basic, Premium ou Prestige",       tooltip: "Choisissez Basic, Premium ou Prestige",          mag: false, pos: "b1" },
+  { num: "02", icon: "✨", title: "Personnalisez",             desc: "Options & format photo",           tooltip: "Cadre, fond, bulles... prix en temps réel",      mag: true,  pos: "b2" },
+  { num: "03", icon: "📅", title: "Indiquez votre date",       desc: "Et votre région",                  tooltip: "Date, région, nom — 3 champs seulement",         mag: false, pos: "b3" },
+  { num: "04", icon: "✉️", title: "Recevez votre devis",       desc: "Sous 24h, sans surprise",          tooltip: "Devis ferme reçu sous 24h",                      mag: true,  pos: "b4" },
+  { num: "05", icon: "✅", title: "Confirmez",                  desc: "Acompte 30% = date bloquée",       tooltip: "Acompte 30% pour bloquer votre date",            mag: false, pos: "b5" },
+  { num: "06", icon: "🎉", title: "Jour J — on gère tout",     desc: "Vous profitez de l'événement",     tooltip: "On livre, installe et repart. Vous profitez !",  mag: true,  pos: "b6" },
+];
 
 export default function ArcPhotobooth() {
   return (
@@ -243,10 +334,9 @@ export default function ArcPhotobooth() {
         <p className="section-label">Comment ça marche</p>
         <h2 className="section-title">Réserver en 6 étapes.<br />On s'occupe du reste.</h2>
         <p className="section-sub">Simple, rapide, sans prise de tête.</p>
-      
+
+        {/* Desktop : arc */}
         <div className="arc-wrapper">
-      
-          {/* Arc SVG pointillé */}
           <svg className="arc-svg" viewBox="0 0 760 360">
             <path d="M 65 200 Q 200 -60 380 10 Q 560 -60 695 200"
                   fill="none"
@@ -254,83 +344,44 @@ export default function ArcPhotobooth() {
                   strokeWidth="2"
                   strokeDasharray="8 6"/>
           </svg>
-      
-          {/* Photobooth tournant au centre */}
           <div className="center-glow"></div>
           <div className="center-photo" title="Passez la souris pour arrêter">
             <Image src="/images/Photobooth-bwood.png" alt="FunkySelfie Photobooth" fill sizes="140px" />
           </div>
-      
-          {/* Bulle 1 */}
-          <div className="bubble-item b1">
-            <div className="tooltip">Choisissez Basic, Premium ou Prestige</div>
-            <div className="bubble-circle">
-              <span className="bnum">01</span>
-              <span className="bicon">📦</span>
+          {STEPS.map((step) => (
+            <div key={step.num} className={`bubble-item ${step.pos}`}>
+              <div className="tooltip">{step.tooltip}</div>
+              <div className={`bubble-circle${step.mag ? " mag" : ""}`}>
+                <span className="bnum">{step.num}</span>
+                <span className="bicon">{step.icon}</span>
+              </div>
+              <span className="btitle">{step.title}</span>
+              <span className="btext">{step.desc}</span>
             </div>
-            <span className="btitle">Choisissez votre formule</span>
-            <span className="btext">Basic, Premium ou Prestige</span>
-          </div>
-      
-          {/* Bulle 2 */}
-          <div className="bubble-item b2">
-            <div className="tooltip">Cadre, fond, bulles... prix en temps réel</div>
-            <div className="bubble-circle mag">
-              <span className="bnum">02</span>
-              <span className="bicon">✨</span>
-            </div>
-            <span className="btitle">Personnalisez</span>
-            <span className="btext">Options & format photo</span>
-          </div>
-      
-          {/* Bulle 3 */}
-          <div className="bubble-item b3">
-            <div className="tooltip">Date, région, nom — 3 champs seulement</div>
-            <div className="bubble-circle">
-              <span className="bnum">03</span>
-              <span className="bicon">📅</span>
-            </div>
-            <span className="btitle">Indiquez votre date</span>
-            <span className="btext">Et votre région</span>
-          </div>
-      
-          {/* Bulle 4 */}
-          <div className="bubble-item b4">
-            <div className="tooltip">Devis ferme reçu sous 24h</div>
-            <div className="bubble-circle mag">
-              <span className="bnum">04</span>
-              <span className="bicon">✉️</span>
-            </div>
-            <span className="btitle">Recevez votre devis</span>
-            <span className="btext">Sous 24h, sans surprise</span>
-          </div>
-      
-          {/* Bulle 5 */}
-          <div className="bubble-item b5">
-            <div className="tooltip">Acompte 30% pour bloquer votre date</div>
-            <div className="bubble-circle">
-              <span className="bnum">05</span>
-              <span className="bicon">✅</span>
-            </div>
-            <span className="btitle">Confirmez</span>
-            <span className="btext">Acompte 30% = date bloquée</span>
-          </div>
-      
-          {/* Bulle 6 */}
-          <div className="bubble-item b6">
-            <div className="tooltip">On livre, installe et repart. Vous profitez !</div>
-            <div className="bubble-circle mag">
-              <span className="bnum">06</span>
-              <span className="bicon">🎉</span>
-            </div>
-            <span className="btitle">Jour J — on gère tout</span>
-            <span className="btext">Vous profitez de l'événement</span>
-          </div>
-      
+          ))}
         </div>
-      
+
+        {/* Mobile : liste verticale */}
+        <div className="steps-mobile">
+          <div className="mobile-photo">
+            <Image src="/images/Photobooth-bwood.png" alt="FunkySelfie Photobooth" fill sizes="90px" />
+          </div>
+          {STEPS.map((step) => (
+            <div key={step.num} className="step-row">
+              <div className={`step-circle${step.mag ? " mag" : ""}`}>
+                <span className="bnum">{step.num}</span>
+                <span className="bicon">{step.icon}</span>
+              </div>
+              <div className="step-content">
+                <p className="step-title">{step.title}</p>
+                <p className="step-desc">{step.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
         <p className="pause-hint">Passez la souris sur le photobooth pour l'arrêter</p>
-      
+
         <div className="cta-section">
           <button className="cta-btn">Réserver ce photobooth</button>
           <p className="cta-note">Devis gratuit • Réponse sous 24h • Aucun engagement</p>

@@ -101,6 +101,48 @@ const Styled = styled.div`
     letter-spacing: 1px;
     text-transform: uppercase;
   }
+
+  @media (max-width: 640px) {
+    .section {
+      padding: 40px 20px;
+    }
+
+    .section-title {
+      font-size: 22px;
+    }
+
+    .section-sub {
+      margin-bottom: 28px;
+    }
+
+    .grid {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .card {
+      padding: 22px 18px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      text-align: left;
+    }
+
+    .icon {
+      margin: 0;
+      min-width: 56px;
+    }
+  }
+
+  @media (min-width: 641px) and (max-width: 900px) {
+    .section {
+      padding: 50px 24px;
+    }
+
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
 `;
 
 export default function CardsMockup() {
