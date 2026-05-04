@@ -30,7 +30,7 @@ Envoyé depuis funkyselfie.ch`;
     },
     body: JSON.stringify({
       from: "devis@funkyselfie.ch",
-      to: ["deborah.makambo@yahoo.fr"],
+      to: ["hello@funkyselfy.ch"],
       subject: "Nouvelle demande de devis FunkySelfie",
       text,
     }),
