@@ -12,8 +12,13 @@
 }
 
 body {
+  font-family: var(--font-dm-sans, system-ui, sans-serif);
   line-height: 1.6;
   color: var(--color-text);
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-syne, system-ui, sans-serif);
 }
 
 html {

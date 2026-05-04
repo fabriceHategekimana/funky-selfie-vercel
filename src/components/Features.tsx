@@ -8,6 +8,7 @@ export default async function Features() {
 
   return (
     <section
+      id="pourquoi"
       className="py-12 md:py-20 px-4 md:px-8"
       aria-label="Ce que FunkySelfie apporte à votre événement"
     >

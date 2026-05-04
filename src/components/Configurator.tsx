@@ -1,5 +1,6 @@
 "use client";
 
+import styled from "styled-components";
 import { useState } from "react";
 
 const packages = [
@@ -9,6 +10,7 @@ const packages = [
     price: 499,
     gallery: "1 mois",
     tagline: "L'essentiel pour une belle soirée",
+    popular: false,
     includes: [
       "400 impressions format 10x15",
       "Accessoires de base inclus",
@@ -42,6 +44,7 @@ const packages = [
     price: 1500,
     gallery: "6 mois",
     tagline: "L'expérience signature, zéro compromis",
+    popular: false,
     includes: [
       "Impressions illimitées format 10x15",
       "Accessoires premium inclus",
@@ -88,6 +91,225 @@ const formats = [
   },
 ];
 
+// ─── Styled components ───────────────────────────────────────────────────────
+
+const FormuleSection = styled.section`
+  background: #f5f7f7;
+  padding: 88px 24px;
+
+  @media (max-width: 768px) {
+    padding: 60px 18px;
+  }
+`;
+
+const SectionHeader = styled.div`
+  max-width: 1100px;
+  margin: 0 auto 52px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 36px;
+  }
+`;
+
+const SectionLabel = styled.span`
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: 14px;
+`;
+
+const SectionTitle = styled.h2`
+  font-size: clamp(1.7rem, 4vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--color-dark);
+  margin-bottom: 14px;
+`;
+
+const SectionSub = styled.p`
+  font-size: 1rem;
+  color: #5a7274;
+  line-height: 1.65;
+`;
+
+const FormuleGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+`;
+
+const FormuleCard = styled.button<{ $highlighted: boolean }>`
+  background: ${({ $highlighted }) =>
+    $highlighted ? "linear-gradient(160deg, #f0fafa 0%, white 100%)" : "white"};
+  border-radius: 20px;
+  padding: 32px 26px;
+  border: 2px solid
+    ${({ $highlighted }) =>
+      $highlighted ? "var(--color-primary)" : "transparent"};
+  transition: all 0.25s;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--color-primary);
+    transform: ${({ $highlighted }) =>
+      $highlighted ? "scaleX(1)" : "scaleX(0)"};
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+
+  &:hover {
+    border-color: var(--color-primary);
+    transform: translateY(-5px);
+    box-shadow: 0 20px 60px rgba(54, 148, 158, 0.14);
+  }
+
+  &:hover::before {
+    transform: scaleX(1);
+  }
+
+  @media (max-width: 768px) {
+    padding: 28px 22px;
+  }
+`;
+
+const FeaturedTag = styled.span`
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: var(--color-magenta);
+  color: white;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 5px 12px;
+  border-radius: 100px;
+`;
+
+const FormuleFrom = styled.div`
+  font-size: 0.75rem;
+  color: #8aa0a2;
+  margin-bottom: 4px;
+`;
+
+const FormulePrice = styled.div`
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: var(--color-dark);
+  line-height: 1;
+  margin-bottom: 4px;
+
+  sup {
+    font-size: 0.95rem;
+    font-weight: 500;
+    vertical-align: super;
+  }
+`;
+
+const FormuleName = styled.div`
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-primary-dark);
+  margin-bottom: 6px;
+`;
+
+const FormuleTagline = styled.p`
+  font-size: 0.88rem;
+  color: #5a7274;
+  margin: 12px 0 20px;
+  line-height: 1.5;
+`;
+
+const FormuleFeatures = styled.ul`
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-bottom: 28px;
+  flex: 1;
+  padding: 0;
+
+  li {
+    font-size: 0.86rem;
+    color: var(--color-text);
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    line-height: 1.4;
+
+    &::before {
+      content: "✓";
+      color: var(--color-primary);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+  }
+`;
+
+const BtnFormule = styled.div<{ $outline: boolean }>`
+  width: 100%;
+  padding: 16px;
+  background: ${({ $outline }) =>
+    $outline ? "transparent" : "var(--color-primary)"};
+  color: ${({ $outline }) => ($outline ? "var(--color-primary)" : "white")};
+  border: 2px solid var(--color-primary);
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  transition: all 0.2s;
+
+  ${FormuleCard}:hover & {
+    background: var(--color-primary);
+    color: white;
+  }
+
+  @media (max-width: 768px) {
+    min-height: 54px;
+  }
+`;
+
+const Footnote = styled.p`
+  text-align: center;
+  margin-top: 28px;
+  color: #8aa0a2;
+  font-size: 0.82rem;
+`;
+
+const ConfigWrapper = styled.div`
+  max-width: 896px;
+  margin: 52px auto 0;
+`;
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
 function FormatSvg({ id }: { id: string }) {
   if (id === "f1") {
     return (
@@ -121,6 +343,8 @@ function FormatSvg({ id }: { id: string }) {
     </svg>
   );
 }
+
+// ─── Component ───────────────────────────────────────────────────────────────
 
 export default function Configurator() {
   const [selectedPkg, setSelectedPkg] = useState<string | null>(null);
@@ -195,55 +419,51 @@ export default function Configurator() {
   };
 
   return (
-    <section
-      id="configurateur"
-      className="bg-bg-light py-12 md:py-20 px-4 md:px-8"
-      aria-label="Configurateur de prix photobooth"
-    >
-      <div className="max-w-4xl mx-auto">
-        <h2 className="text-center text-2xl md:text-4xl font-bold mb-3 text-dark">
-          Une formule pour chaque événement. Choisissez, personnalisez, réservez.
-        </h2>
-        <p className="text-center text-text-light mb-10 md:mb-14">
+    <FormuleSection id="configurateur" aria-label="Configurateur de prix photobooth">
+      <SectionHeader>
+        <SectionLabel>Nos formules</SectionLabel>
+        <SectionTitle>Une formule pour chaque événement.</SectionTitle>
+        <SectionSub>
           Choisissez votre formule, ajoutez vos options. Le prix se calcule en temps réel.
-        </p>
+        </SectionSub>
+      </SectionHeader>
 
-        {/* Étape 1 — Formules */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8">
-          {packages.map((p) => (
-            <button
+      {/* Étape 1 — Formules */}
+      <FormuleGrid>
+        {packages.map((p) => {
+          const isHighlighted =
+            selectedPkg === p.id || (selectedPkg === null && p.popular);
+          return (
+            <FormuleCard
               key={p.id}
               type="button"
               onClick={() => handlePkgSelect(p.id)}
-              className={`relative text-left rounded-2xl border-2 p-6 transition-all duration-200 bg-white cursor-pointer ${
-                selectedPkg === p.id
-                  ? "border-primary shadow-md"
-                  : "border-gray-200 hover:border-primary/50"
-              }`}
+              $highlighted={isHighlighted}
             >
-              {p.id === "premium" && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-white text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">
-                  Le plus choisi
-                </span>
-              )}
-              <p className="text-xs text-gray-400 mb-0.5">À partir de</p>
-              <p className="text-2xl font-extrabold text-primary mb-1">CHF {p.price}</p>
-              <p className="text-lg font-bold text-dark mb-2">{p.label}</p>
-              <p className="text-sm text-text-light mb-4">{p.tagline}</p>
-              <ul className="space-y-1">
+              {p.popular && <FeaturedTag>POPULAIRE</FeaturedTag>}
+              <FormuleFrom>À partir de</FormuleFrom>
+              <FormulePrice>
+                <sup>CHF </sup>
+                {p.price}
+              </FormulePrice>
+              <FormuleName>{p.label}</FormuleName>
+              <FormuleTagline>{p.tagline}</FormuleTagline>
+              <FormuleFeatures>
                 {p.includes.map((item) => (
-                  <li key={item} className="text-xs text-text-light flex items-start gap-1.5">
-                    <span className="text-primary mt-0.5 shrink-0" aria-hidden="true">
-                      ✓
-                    </span>
-                    {item}
-                  </li>
+                  <li key={item}>{item}</li>
                 ))}
-              </ul>
-            </button>
-          ))}
-        </div>
+              </FormuleFeatures>
+              <BtnFormule $outline={!p.popular}>Choisir</BtnFormule>
+            </FormuleCard>
+          );
+        })}
+      </FormuleGrid>
 
+      <Footnote>
+        Déplacement CHF 1.00/km A/R depuis Bienne · Options supplémentaires disponibles ci-dessous
+      </Footnote>
+
+      <ConfigWrapper>
         {/* Étape 2 — Options */}
         {selectedPkg && (
           <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-6">
@@ -355,7 +575,6 @@ export default function Configurator() {
           >
             <h3 className="font-bold text-dark text-lg mb-6">Votre demande</h3>
 
-            {/* Champs pré-remplis (lecture seule) */}
             <div className="space-y-3 mb-6">
               <div>
                 <p className="text-xs text-gray-400 mb-1">Formule</p>
@@ -391,13 +610,9 @@ export default function Configurator() {
               </div>
             </div>
 
-            {/* Champs à remplir */}
             <div className="space-y-4">
               <div>
-                <label
-                  htmlFor="event-date"
-                  className="text-sm font-medium text-dark block mb-1"
-                >
+                <label htmlFor="event-date" className="text-sm font-medium text-dark block mb-1">
                   Date de l&apos;événement *
                 </label>
                 <input
@@ -410,10 +625,7 @@ export default function Configurator() {
                 />
               </div>
               <div>
-                <label
-                  htmlFor="event-region"
-                  className="text-sm font-medium text-dark block mb-1"
-                >
+                <label htmlFor="event-region" className="text-sm font-medium text-dark block mb-1">
                   Région *
                 </label>
                 <input
@@ -427,10 +639,7 @@ export default function Configurator() {
                 />
               </div>
               <div>
-                <label
-                  htmlFor="client-nom"
-                  className="text-sm font-medium text-dark block mb-1"
-                >
+                <label htmlFor="client-nom" className="text-sm font-medium text-dark block mb-1">
                   Votre nom{" "}
                   <span className="font-normal text-gray-400">(optionnel)</span>
                 </label>
@@ -444,10 +653,7 @@ export default function Configurator() {
                 />
               </div>
               <div>
-                <label
-                  htmlFor="client-email"
-                  className="text-sm font-medium text-dark block mb-1"
-                >
+                <label htmlFor="client-email" className="text-sm font-medium text-dark block mb-1">
                   Votre email *
                 </label>
                 <input
@@ -461,10 +667,7 @@ export default function Configurator() {
                 />
               </div>
               <div>
-                <label
-                  htmlFor="client-telephone"
-                  className="text-sm font-medium text-dark block mb-1"
-                >
+                <label htmlFor="client-telephone" className="text-sm font-medium text-dark block mb-1">
                   Votre téléphone{" "}
                   <span className="font-normal text-gray-400">(optionnel)</span>
                 </label>
@@ -500,7 +703,7 @@ export default function Configurator() {
             </p>
           </div>
         )}
-      </div>
-    </section>
+      </ConfigWrapper>
+    </FormuleSection>
   );
 }
