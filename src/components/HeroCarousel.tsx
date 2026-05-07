@@ -245,8 +245,8 @@ const TrustItem = styled.div`
 `;
 
 const PhotoboothWrap = styled.div`
-  flex: 0 0 380px;
-  width: 380px;
+  flex: 0 0 547px;
+  width: 547px;
   position: relative;
   display: flex;
   align-items: center;
@@ -260,8 +260,8 @@ const PhotoboothWrap = styled.div`
 `;
 
 const Photobooth360 = styled.div`
-  width: 320px;
-  height: 420px;
+  width: 461px;
+  height: 605px;
   position: relative;
   animation: ${float} 4s ease-in-out infinite;
 
@@ -271,14 +271,14 @@ const Photobooth360 = styled.div`
   }
 
   @media (max-width: 768px) {
-    width: 200px;
-    height: 260px;
+    width: 240px;
+    height: 312px;
     margin: 0 auto;
   }
 
   @media (max-width: 420px) {
-    width: 170px;
-    height: 220px;
+    width: 204px;
+    height: 264px;
   }
 `;
 
@@ -325,11 +325,11 @@ export default function HeroCarousel({ title, subtitle, ctaText }: HeroCarouselP
         <PhotoboothWrap>
           <Photobooth360>
             <Image
-              src="/images/Photobooth-bwood.png"
+              src="/images/photobooth_face.png"
               alt="Photobooth FunkySelfie"
               fill
               style={{ objectFit: "contain" }}
-              sizes="(max-width: 768px) 200px, 320px"
+              sizes="(max-width: 1068px) 240px, 461px"
               priority
             />
           </Photobooth360>

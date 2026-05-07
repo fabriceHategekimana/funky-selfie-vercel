@@ -12,7 +12,7 @@ export function JsonLd() {
     areaServed: { "@type": "Country", name: "Switzerland" },
     address: { "@type": "PostalAddress", addressCountry: "CH" },
     logo: "https://funky-selfie.ch/images/logo.png",
-    image: "https://funky-selfie.ch/images/Photobooth-bwood.png",
+    image: "https://funky-selfie.ch/images/photobooth_face.jpeg",
     sameAs: [],
   };
 
