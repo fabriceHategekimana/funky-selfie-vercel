@@ -176,7 +176,7 @@ export default function WhyUs() {
     <Section id="pourquoi" aria-label="Pourquoi choisir FunkySelfie">
       <SectionHeader>
         <SectionLabel>Pourquoi FunkySelfie</SectionLabel>
-        <SectionTitle>On s'occupe de tout.</SectionTitle>
+        <SectionTitle>On s&apos;occupe de tout.</SectionTitle>
         <SectionSub>Ce qui nous différencie des autres.</SectionSub>
       </SectionHeader>
 

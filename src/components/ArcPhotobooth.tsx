@@ -332,7 +332,7 @@ export default function ArcPhotobooth() {
     <Styled>
       <div className="section">
         <p className="section-label">Comment ça marche</p>
-        <h2 className="section-title">Réserver en 6 étapes.<br />On s'occupe du reste.</h2>
+        <h2 className="section-title">Réserver en 6 étapes.<br />On s&apos;occupe du reste.</h2>
         <p className="section-sub">Simple, rapide, sans prise de tête.</p>
 
         {/* Desktop : arc */}
@@ -380,7 +380,7 @@ export default function ArcPhotobooth() {
           ))}
         </div>
 
-        <p className="pause-hint">Passez la souris sur le photobooth pour l'arrêter</p>
+        <p className="pause-hint">Passez la souris sur le photobooth pour l&apos;arrêter</p>
 
         <div className="cta-section">
           <button className="cta-btn">Réserver ce photobooth</button>

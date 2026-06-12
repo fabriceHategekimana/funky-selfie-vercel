@@ -158,7 +158,7 @@ export default function CardsMockup() {
           <div className="card">
             <div className="icon icon-teal">🚚</div>
             <p className="card-title">Livraison & installation</p>
-            <p className="card-text">On arrive, on installe, on repart. Vous n'avez rien à faire.</p>
+            <p className="card-text">On arrive, on installe, on repart. Vous n&apos;avez rien à faire.</p>
           </div>
       
           <div className="card">

@@ -1,7 +1,7 @@
 import type { StructureResolver } from "sanity/structure";
-import { HomeIcon, EnvelopeIcon, DocumentIcon } from "@sanity/icons";
+import { HomeIcon, EnvelopeIcon, DocumentIcon, TagIcon } from "@sanity/icons";
 
-const SINGLETONS = ["heroSection", "contactSection", "footerSection"];
+const SINGLETONS = ["heroSection", "contactSection", "footerSection", "promoSettings"];
 
 export const structure: StructureResolver = (S) =>
   S.list()
@@ -30,6 +30,14 @@ export const structure: StructureResolver = (S) =>
           S.document()
             .schemaType("footerSection")
             .documentId("2c653873-5542-4c48-a0af-0272f370f63b")
+        ),
+      S.listItem()
+        .title("Promo")
+        .icon(TagIcon)
+        .child(
+          S.document()
+            .schemaType("promoSettings")
+            .documentId("promoSettings")
         ),
       S.divider(),
       ...S.documentTypeListItems().filter(

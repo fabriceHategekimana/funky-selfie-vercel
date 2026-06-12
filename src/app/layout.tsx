@@ -1,11 +1,25 @@
 import type { Metadata } from "next";
 import { Syne, DM_Sans } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
+import PromoBanner from "@/components/PromoBanner";
+import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import CookieBanner from "@/components/CookieBanner";
+import ScrollReveal from "@/components/ScrollReveal";
+import Analytics from "@/components/Analytics";
 import { JsonLd } from "@/components/JsonLd";
 import { SanityLive } from "@/sanity/lib/live";
 import StyledComponentsRegistry from "@/lib/StyledComponentsRegistry";
+import { LanguageProvider } from "@/contexts/LanguageContext";
+import { PromoProvider } from "@/contexts/PromoContext";
+import { ConsentProvider } from "@/contexts/ConsentContext";
+import { sanityFetch } from "@/sanity/lib/live";
+import { promoQuery } from "@/sanity/lib/queries";
+import { resolvePromo, type PromoSettings } from "@/lib/promo";
+
+// Recalcule l'état de la promo (notamment l'activation par dates) au moins
+// toutes les 30 min, sans redéploiement.
+export const revalidate = 1800;
 
 const syne = Syne({
   subsets: ["latin"],
@@ -22,13 +36,13 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://funky-selfie.ch"),
+  metadataBase: new URL("https://www.funkyselfie.ch"),
   title: {
-    default: "FunkySelfie | Location Photobooth Corporate — Suisse",
+    default: "FunkySelfie | Location Photobooth en Suisse — Livré & Installé",
     template: "%s | FunkySelfie",
   },
   description:
-    "Louez un photobooth haut de gamme pour vos événements corporate en Suisse. Personnalisé à vos couleurs, livré et installé partout. Devis gratuit sous 24h.",
+    "Louez un photobooth professionnel en Suisse. Livré, installé, géré de A à Z. Impressions instantanées, galerie cloud, 100% personnalisable. Devis gratuit sous 48h.",
   keywords: [
     "photobooth corporate",
     "location photobooth Suisse",
@@ -60,29 +74,32 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "fr_CH",
-    url: "https://funky-selfie.ch",
+    url: "https://www.funkyselfie.ch",
     siteName: "FunkySelfie",
-    title: "FunkySelfie | Photobooth Corporate Clé en Main — Suisse",
+    title: "FunkySelfie | Location Photobooth en Suisse",
     description:
-      "Le photobooth corporate qui renforce votre marque. Service intégral partout en Suisse. On s'occupe de tout.",
+      "Photobooth professionnel. Livré, installé, géré de A à Z. Devis gratuit sous 48h.",
     images: [
       {
         url: "/images/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "FunkySelfie - Location de Photobooth Corporate en Suisse",
+        alt: "FunkySelfie - Location de Photobooth en Suisse",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "FunkySelfie | Photobooth Corporate Clé en Main — Suisse",
+    title: "FunkySelfie | Location Photobooth en Suisse",
     description:
-      "Le photobooth corporate qui renforce votre marque. Service intégral partout en Suisse. On s'occupe de tout.",
+      "Photobooth professionnel. Livré, installé, géré de A à Z. Devis gratuit sous 48h.",
     images: ["/images/og-image.jpg"],
   },
   alternates: {
-    canonical: "https://funky-selfie.ch",
+    // Site mono-URL : le contenu FR/EN/DE est servi à la même adresse via un
+    // changement de langue côté client (localStorage). Pas de hreflang par locale
+    // (qui exigerait des URLs distinctes). Voir LanguageContext.
+    canonical: "https://www.funkyselfie.ch",
   },
   icons: {
     icon: [
@@ -96,26 +113,33 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { data } = (await sanityFetch({ query: promoQuery })) as { data: PromoSettings };
+  const promo = resolvePromo(data);
+
   return (
     <html lang="fr">
-      <head>
-        <link
-          href="https://calendar.google.com/calendar/scheduling-button-script.css"
-          rel="stylesheet"
-        />
-      </head>
       <body className={`${syne.variable} ${dmSans.variable} antialiased`}>
         <StyledComponentsRegistry>
-          <JsonLd />
-          <Header />
-          <main>{children}</main>
-          <Footer />
-          <SanityLive />
+          <LanguageProvider>
+            <PromoProvider value={promo}>
+              <ConsentProvider>
+                <JsonLd />
+                <PromoBanner />
+                <Navbar />
+                <main>{children}</main>
+                <Footer />
+                <CookieBanner />
+                <ScrollReveal />
+                <SanityLive />
+                <Analytics />
+              </ConsentProvider>
+            </PromoProvider>
+          </LanguageProvider>
         </StyledComponentsRegistry>
       </body>
     </html>

@@ -3,16 +3,18 @@ export function JsonLd() {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     name: "FunkySelfie",
-    description:
-      "Location de photobooth professionnel clé en main pour événements corporate en Suisse. Livraison, installation et reprise incluses. Pick-up gratuit.",
-    url: "https://funky-selfie.ch",
-    telephone: "+41-XX-XXX-XX-XX",
-    email: "contact@funky-selfie.ch",
-    priceRange: "CHF 600–1500",
-    areaServed: { "@type": "Country", name: "Switzerland" },
-    address: { "@type": "PostalAddress", addressCountry: "CH" },
-    logo: "https://funky-selfie.ch/images/logo.png",
-    image: "https://funky-selfie.ch/images/photobooth_face.jpeg",
+    description: "Location de photobooth professionnel en Suisse",
+    url: "https://www.funkyselfie.ch",
+    email: "hello@funkyselfie.ch",
+    priceRange: "CHF 499–1500",
+    areaServed: "CH",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Bienne",
+      addressCountry: "CH",
+    },
+    logo: "https://www.funkyselfie.ch/images/logo.png",
+    image: "https://www.funkyselfie.ch/images/photobooth_face.jpeg",
     sameAs: [],
   };
 
@@ -28,13 +30,13 @@ export function JsonLd() {
         "@type": "Offer",
         name: "Basic",
         priceCurrency: "CHF",
-        price: "600",
+        price: "499",
       },
       {
         "@type": "Offer",
         name: "Premium",
         priceCurrency: "CHF",
-        price: "850",
+        price: "799",
       },
       {
         "@type": "Offer",
@@ -51,26 +53,34 @@ export function JsonLd() {
     mainEntity: [
       {
         "@type": "Question",
-        name: "FunkySelfie se déplace-t-il partout en Suisse ?",
+        name: "Combien de temps faut-il pour installer le photobooth ?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Oui, FunkySelfie intervient dans toute la Suisse. La livraison et l'installation sont incluses au tarif de CHF 1.00/km aller-retour. Le pick-up est gratuit.",
+          text: "On arrive 30 à 45 minutes avant le début de votre événement. L'installation est rapide et discrète — quand vos invités arrivent, tout est prêt.",
         },
       },
       {
         "@type": "Question",
-        name: "Peut-on personnaliser le photobooth aux couleurs de notre entreprise ?",
+        name: "Que se passe-t-il si je dois annuler ou changer de date ?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Oui, dès la formule Basic. Logos, couleurs, cadres, overlays et fond de décor sont personnalisables selon votre charte graphique.",
+          text: "Pas de panique. Un changement de date est possible sans frais si vous nous prévenez plus de 14 jours avant. En cas d'annulation, l'acompte de 50% est retenu mais le reste vous est remboursé intégralement.",
         },
       },
       {
         "@type": "Question",
-        name: "Quelles options peut-on ajouter ?",
+        name: "Le déplacement est-il inclus dans le prix ?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Animateur dédié (CHF 45/h), props & accessoires, fond de décor sur mesure, animations GIF et Boomerang — sélectionnables au moment du devis.",
+          text: "Le pick-up gratuit est disponible à Bienne. Pour une livraison sur site, un forfait de CHF 1.00/km A/R depuis Bienne est appliqué — sans surprise, calculé à l'avance dans votre devis.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Peut-on mettre notre logo sur les photos ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Oui, dès la formule Premium. Votre logo apparaît sur chaque impression et dans la galerie digitale. Envoyez-nous simplement votre fichier et on s'occupe de tout.",
         },
       },
     ],
@@ -80,9 +90,9 @@ export function JsonLd() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "FunkySelfie",
-    url: "https://funky-selfie.ch",
+    url: "https://www.funkyselfie.ch",
     description:
-      "FunkySelfie — Location de Photobooth Corporate en Suisse pour vos événements.",
+      "FunkySelfie — Location de photobooth professionnel en Suisse pour vos événements.",
     inLanguage: "fr",
   };
 

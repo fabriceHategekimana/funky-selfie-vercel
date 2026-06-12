@@ -6,7 +6,8 @@ import { feature } from "./feature";
 import { service } from "./service";
 import { contactSection } from "./contactSection";
 import { footerSection } from "./footerSection";
+import { promoSettings } from "./promoSettings";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [heroSection, feature, service, testimonial, faqItem, contactSection, footerSection],
+  types: [heroSection, feature, service, testimonial, faqItem, contactSection, footerSection, promoSettings],
 };

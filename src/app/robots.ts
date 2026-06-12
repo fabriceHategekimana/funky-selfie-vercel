@@ -5,7 +5,9 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
+      disallow: ["/api/", "/_next/", "/studio"],
     },
-    sitemap: "https://funkyselfie.ch/sitemap.xml",
+    sitemap: "https://www.funkyselfie.ch/sitemap.xml",
+    host: "https://www.funkyselfie.ch",
   };
 }

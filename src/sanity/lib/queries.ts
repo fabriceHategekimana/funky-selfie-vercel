@@ -27,3 +27,7 @@ export const testimonialsQuery = defineQuery(
 export const faqQuery = defineQuery(
   `*[_type == "faqItem"] | order(order asc) { _id, question, answer }`
 );
+
+export const promoQuery = defineQuery(
+  `*[_type == "promoSettings"][0] { enabled, percentage, startDate, endDate, label }`
+);
