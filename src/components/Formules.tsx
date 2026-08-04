@@ -35,8 +35,8 @@ const Label = styled.span`
 const Title = styled.h2`
   font-family: var(--font-syne), sans-serif;
   font-size: clamp(1.6rem, 4vw, 2.5rem);
-  font-weight: 800;
-  line-height: 1.15;
+  font-weight: 700;
+  line-height: 1.2;
   color: var(--text);
   margin-bottom: 12px;
 
@@ -202,6 +202,10 @@ const FeatureList = styled.ul`
     align-items: flex-start;
     gap: 9px;
     line-height: 1.4;
+
+    @media (max-width: 768px) {
+      font-size: 0.9rem;
+    }
   }
   li::before {
     content: "✓";
@@ -241,6 +245,11 @@ const Note = styled.p`
   margin-top: 24px;
   color: #8aa0a2;
   font-size: 0.8rem;
+
+  @media (max-width: 768px) {
+    font-size: 0.85rem;
+    padding: 0 8px;
+  }
 `;
 
 const PLANS = [

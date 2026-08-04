@@ -29,7 +29,7 @@ body {
   line-height: 1.6;
   color: var(--text);
   background: var(--white);
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 h1, h2, h3, h4 {
@@ -39,6 +39,28 @@ h1, h2, h3, h4 {
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 100px;
+  overflow-x: clip;
+}
+
+@media (max-width: 768px) {
+  html {
+    scroll-padding-top: 116px;
+  }
+}
+
+/* ─── Respect du réglage système "réduire les animations" ─── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .fade-up {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
 /* ─── SCROLL REVEAL (fade-up) — piloté par ScrollReveal.tsx ─── */

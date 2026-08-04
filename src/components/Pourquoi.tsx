@@ -30,7 +30,8 @@ const Label = styled.span`
 const Title = styled.h2`
   font-family: var(--font-syne), sans-serif;
   font-size: clamp(1.6rem, 4vw, 2.5rem);
-  font-weight: 800;
+  font-weight: 700;
+  line-height: 1.2;
   line-height: 1.15;
   color: var(--text);
 
@@ -51,7 +52,7 @@ const Bento = styled.div`
     grid-template-columns: 1fr 1fr;
     gap: 10px;
   }
-  @media (max-width: 420px) {
+  @media (max-width: 560px) {
     grid-template-columns: 1fr;
   }
 `;
@@ -98,6 +99,10 @@ const CardText = styled.p`
   font-size: 0.8rem;
   line-height: 1.55;
   opacity: 0.78;
+
+  @media (max-width: 768px) {
+    font-size: 0.875rem;
+  }
 `;
 
 const Stat = styled.div`

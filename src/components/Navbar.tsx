@@ -25,6 +25,11 @@ const Nav = styled.nav<{ $banner: boolean }>`
   @media (max-width: 768px) {
     top: ${(p) => (p.$banner ? "36px" : "0")};
     padding: 12px 18px;
+    /* blur recomposé à chaque frame de scroll sur mobile — fond quasi-opaque
+       suffisant visuellement, sans le coût du filtre. */
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 `;
 
@@ -74,8 +79,10 @@ const LangSwitcher = styled.div`
   align-items: center;
   margin-right: 12px;
 
+  /* Doublon avec MobileLangSwitcher (panneau burger, qui a la place pour
+     des cibles tactiles correctes) — masqué en mobile pour désencombrer la barre. */
   @media (max-width: 768px) {
-    margin-right: 4px;
+    display: none;
   }
 `;
 
@@ -95,9 +102,15 @@ const LangBtn = styled.button<{ $active: boolean }>`
     opacity: ${(p) => (p.$active ? 1 : 0.85)};
   }
 
+  /* Seule instance visible en mobile : celle du panneau burger (assez de place
+     pour respecter la cible tactile min. 44x44). */
   @media (max-width: 768px) {
-    font-size: 1.2rem;
-    padding: 2px 4px;
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
   }
 `;
 

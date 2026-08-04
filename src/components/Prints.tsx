@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import styled from "styled-components";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useInView } from "@/hooks/useInView";
 
 const Section = styled.div`
   background: var(--dark);
@@ -34,7 +35,8 @@ const Label = styled.span`
 const Title = styled.h2`
   font-family: var(--font-syne), sans-serif;
   font-size: clamp(1.6rem, 4vw, 2.5rem);
-  font-weight: 800;
+  font-weight: 700;
+  line-height: 1.2;
   line-height: 1.15;
   color: white;
   margin-bottom: 12px;
@@ -90,20 +92,30 @@ const Slide = styled.div<{ $active: boolean; $rot: string }>`
 
 const Dots = styled.div`
   display: flex;
-  gap: 8px;
+  gap: 4px;
   justify-content: center;
   margin-top: 20px;
 `;
 
 const Dot = styled.button<{ $active: boolean }>`
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: ${(p) => (p.$active ? "var(--teal)" : "rgba(255,255,255,0.2)")};
-  transition: background 0.3s;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
   cursor: pointer;
   border: none;
   padding: 0;
+
+  &::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: ${(p) => (p.$active ? "var(--teal)" : "rgba(255,255,255,0.2)")};
+    transition: background 0.3s;
+  }
 `;
 
 const Cta = styled.div`
@@ -141,14 +153,16 @@ const SLIDES = [
 export default function Prints() {
   const { t } = useLanguage();
   const [current, setCurrent] = useState(0);
+  const [ref, inView] = useInView<HTMLDivElement>();
 
   useEffect(() => {
+    if (!inView) return;
     const id = setInterval(() => setCurrent((c) => (c + 1) % SLIDES.length), 3200);
     return () => clearInterval(id);
-  }, []);
+  }, [inView]);
 
   return (
-    <Section className="prints-section">
+    <Section className="prints-section" ref={ref}>
       <Header className="fade-up">
         <Label>{t.printsLabel}</Label>
         <Title>{t.printsTitle}</Title>

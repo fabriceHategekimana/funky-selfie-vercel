@@ -31,7 +31,7 @@ const Section = styled.section`
   padding: 145px 40px 60px;
 
   @media (max-width: 768px) {
-    padding: 128px 20px 52px;
+    padding: 116px 20px 40px;
   }
 `;
 
@@ -65,6 +65,11 @@ const Grain = styled.div`
   z-index: 2;
   opacity: 0.03;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+
+  /* Grain à 3% d'opacité : invisible sur petit écran, coûteux à rastériser. */
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const Inner = styled.div`
@@ -79,7 +84,7 @@ const Inner = styled.div`
 
   @media (max-width: 768px) {
     flex-direction: column;
-    gap: 24px;
+    gap: 16px;
     align-items: center;
   }
 `;
@@ -113,13 +118,17 @@ const Badge = styled.div`
     font-size: 0.45rem;
     animation: ${pulse} 2s infinite;
   }
+
+  @media (max-width: 768px) {
+    margin-bottom: 16px;
+  }
 `;
 
 const Title = styled.h1`
   font-family: var(--font-syne), sans-serif;
   font-size: clamp(1.9rem, 5vw, 3.5rem);
-  font-weight: 800;
-  line-height: 1.1;
+  font-weight: 700;
+  line-height: 1.15;
   color: var(--white);
   margin-bottom: 18px;
   text-align: left;
@@ -132,6 +141,7 @@ const Title = styled.h1`
   @media (max-width: 768px) {
     font-size: clamp(1.7rem, 7vw, 2.2rem);
     text-align: center;
+    margin-bottom: 14px;
   }
 `;
 
@@ -145,7 +155,7 @@ const Sub = styled.p`
   @media (max-width: 768px) {
     font-size: 0.92rem;
     text-align: center;
-    margin-bottom: 24px;
+    margin-bottom: 18px;
   }
 `;
 
@@ -226,11 +236,11 @@ const Trust = styled.div`
 
   @media (max-width: 768px) {
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    margin-top: 22px;
-    padding-top: 18px;
+    margin-top: 16px;
+    padding-top: 14px;
   }
 `;
 
@@ -273,14 +283,14 @@ const Booth360 = styled.div`
   animation: ${float} 4s ease-in-out infinite;
 
   @media (max-width: 768px) {
-    width: 200px;
-    height: 265px;
+    width: 180px;
+    height: 238px;
     margin: 0 auto;
   }
 
   @media (max-width: 420px) {
-    width: 170px;
-    height: 225px;
+    width: 150px;
+    height: 198px;
   }
 `;
 
@@ -296,6 +306,8 @@ const BoothImg = styled(Image)<{ $active: boolean }>`
   transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
 `;
 
+const BOOTH_SIZES = "(max-width: 420px) 150px, (max-width: 768px) 180px, 380px";
+
 const Glow = styled.div`
   position: absolute;
   bottom: -24px;
@@ -308,19 +320,36 @@ const Glow = styled.div`
   animation: ${glowPulse} 4s ease-in-out infinite;
 `;
 
-const BOOTHS = ["booth-1", "booth-2", "booth-3", "booth-4"];
+const BOOTHS = ["booth-1.png", "booth-2.png", "booth-3.png", "booth-4.png"];
 const BOOTH_ORDER = [0, 3, 1, 2];
 
 export default function Hero() {
   const { t } = useLanguage();
   const [pos, setPos] = useState(0);
+  // Rotation désactivée sur mobile : évite 4 calques mix-blend-mode superposés
+  // en compositing permanent et le téléchargement des 3 images inutilisées.
+  // Défaut à false (comme le reste du repo, cf. LanguageProvider) pour éviter
+  // un mismatch d'hydratation ; corrigé côté client juste après le montage.
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const id = setInterval(() => setPos((p) => (p + 1) % BOOTH_ORDER.length), 2000);
-    return () => clearInterval(id);
+    const mq = window.matchMedia("(max-width: 768px)");
+    // Hydratation depuis le store externe (matchMedia) au montage — exception légitime.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
   }, []);
 
-  const activeImg = BOOTH_ORDER[pos];
+  useEffect(() => {
+    if (isMobile) return;
+    const id = setInterval(() => setPos((p) => (p + 1) % BOOTH_ORDER.length), 2000);
+    return () => clearInterval(id);
+  }, [isMobile]);
+
+  const activeImg = isMobile ? 0 : BOOTH_ORDER[pos];
+  const booths = isMobile ? BOOTHS.slice(0, 1) : BOOTHS;
   const trust = [t.trust1, t.trust2, t.trust3, t.trust4];
 
   return (
@@ -349,13 +378,14 @@ export default function Hero() {
         </Content>
         <BoothWrap>
           <Booth360>
-            {BOOTHS.map((name, i) => (
+            {booths.map((name, i) => (
               <BoothImg
                 key={name}
-                src={`/images/v9/${name}.jpg`}
+                src={`/images/v9/${name}`}
                 alt="FunkySelfie Photobooth"
                 width={380}
                 height={500}
+                sizes={BOOTH_SIZES}
                 priority={i === 0}
                 $active={i === activeImg}
               />

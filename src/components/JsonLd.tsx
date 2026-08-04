@@ -14,7 +14,7 @@ export function JsonLd() {
       addressCountry: "CH",
     },
     logo: "https://www.funkyselfie.ch/images/logo.png",
-    image: "https://www.funkyselfie.ch/images/photobooth_face.jpeg",
+    image: "https://www.funkyselfie.ch/images/photobooth_face.png",
     sameAs: [],
   };
 

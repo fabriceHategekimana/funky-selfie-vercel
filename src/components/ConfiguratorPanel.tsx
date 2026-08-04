@@ -197,7 +197,7 @@ export default function ConfiguratorPanel({
               if (e.target.value.length <= 40) setMessage(e.target.value);
             }}
             placeholder={c.messagePlaceholder}
-            className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-primary"
+            className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base focus:outline-none focus:border-primary"
             maxLength={40}
           />
           <p className="text-xs text-gray-400 mt-1 text-right">
@@ -208,11 +208,11 @@ export default function ConfiguratorPanel({
 
       {/* Prix total */}
       <div className="rounded-2xl border-2 border-primary p-6 mb-6 bg-white">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between flex-wrap gap-x-4 gap-y-2">
           <span className="font-bold text-dark text-lg">{c.totalLabel}</span>
-          <span className="flex items-baseline gap-3">
+          <span className="flex items-baseline gap-3 flex-wrap">
             {promo.active && <span className="text-lg text-gray-400 line-through">CHF {totalFull}</span>}
-            <span className="text-3xl font-extrabold text-primary">CHF {total}</span>
+            <span className="text-2xl sm:text-3xl font-extrabold text-primary">CHF {total}</span>
           </span>
         </div>
         {promo.active && (
@@ -284,7 +284,7 @@ export default function ConfiguratorPanel({
                 required
                 value={formData.date}
                 onChange={(e) => setFormData((d) => ({ ...d, date: e.target.value }))}
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-primary"
+                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base focus:outline-none focus:border-primary"
               />
             </div>
             <div>
@@ -298,7 +298,7 @@ export default function ConfiguratorPanel({
                 value={formData.region}
                 onChange={(e) => setFormData((d) => ({ ...d, region: e.target.value }))}
                 placeholder={c.regionPlaceholder}
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-primary"
+                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base focus:outline-none focus:border-primary"
               />
             </div>
             <div>
@@ -311,7 +311,7 @@ export default function ConfiguratorPanel({
                 value={formData.nom}
                 onChange={(e) => setFormData((d) => ({ ...d, nom: e.target.value }))}
                 placeholder={c.namePlaceholder}
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-primary"
+                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base focus:outline-none focus:border-primary"
               />
             </div>
             <div>
@@ -325,7 +325,7 @@ export default function ConfiguratorPanel({
                 value={formData.email}
                 onChange={(e) => setFormData((d) => ({ ...d, email: e.target.value }))}
                 placeholder={c.emailPlaceholder}
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-primary"
+                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base focus:outline-none focus:border-primary"
               />
             </div>
             <div>
@@ -338,7 +338,7 @@ export default function ConfiguratorPanel({
                 value={formData.telephone}
                 onChange={(e) => setFormData((d) => ({ ...d, telephone: e.target.value }))}
                 placeholder={c.phonePlaceholder}
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-primary"
+                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base focus:outline-none focus:border-primary"
               />
             </div>
           </div>

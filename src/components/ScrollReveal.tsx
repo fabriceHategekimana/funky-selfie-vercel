@@ -23,7 +23,17 @@ export default function ScrollReveal() {
       { threshold: 0.08 },
     );
     els.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+
+    // Filet de sécurité : sur une connexion lente, l'hydratation peut traîner
+    // assez pour que la page paraisse vide le temps que l'observer démarre.
+    const failsafe = setTimeout(() => {
+      els.forEach((el) => el.classList.add("visible"));
+    }, 2500);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(failsafe);
+    };
   }, []);
 
   return null;

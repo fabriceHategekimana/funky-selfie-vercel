@@ -1,5 +1,6 @@
 "use client";
 
+import { Fragment } from "react";
 import styled from "styled-components";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useConsent } from "@/contexts/ConsentContext";
@@ -67,6 +68,17 @@ const Accept = styled.button`
   }
 `;
 
+// Occupe le flux normal en bas de page pour que le bandeau (position: fixed)
+// ne masque pas le contenu du footer une fois affiché.
+const Spacer = styled.div<{ $hidden: boolean }>`
+  height: ${(p) => (p.$hidden ? "0" : "76px")};
+  transition: height 0.4s ease;
+
+  @media (max-width: 768px) {
+    height: ${(p) => (p.$hidden ? "0" : "148px")};
+  }
+`;
+
 const Refuse = styled.button`
   background: transparent;
   color: rgba(255, 255, 255, 0.6);
@@ -95,12 +107,15 @@ export default function CookieBanner() {
   const hidden = !ready || consent !== null;
 
   return (
-    <Banner $hidden={hidden} aria-hidden={hidden}>
-      <Text dangerouslySetInnerHTML={{ __html: t.cookieText }} />
-      <Btns>
-        <Refuse onClick={() => setConsent("refused")}>{t.cookieRefuse}</Refuse>
-        <Accept onClick={() => setConsent("accepted")}>{t.cookieAccept}</Accept>
-      </Btns>
-    </Banner>
+    <Fragment>
+      <Banner $hidden={hidden} aria-hidden={hidden}>
+        <Text dangerouslySetInnerHTML={{ __html: t.cookieText }} />
+        <Btns>
+          <Refuse onClick={() => setConsent("refused")}>{t.cookieRefuse}</Refuse>
+          <Accept onClick={() => setConsent("accepted")}>{t.cookieAccept}</Accept>
+        </Btns>
+      </Banner>
+      <Spacer $hidden={hidden} aria-hidden="true" />
+    </Fragment>
   );
 }

@@ -54,7 +54,8 @@ const Label = styled.span`
 const Title = styled.h2`
   font-family: var(--font-syne), sans-serif;
   font-size: clamp(1.6rem, 4vw, 2.5rem);
-  font-weight: 800;
+  font-weight: 700;
+  line-height: 1.2;
   line-height: 1.15;
   color: white;
   margin-bottom: 12px;
@@ -159,6 +160,10 @@ const StepDesc = styled.p`
   font-size: 0.73rem;
   color: rgba(255, 255, 255, 0.42);
   line-height: 1.5;
+
+  @media (max-width: 768px) {
+    font-size: 0.875rem;
+  }
 `;
 
 const ICONS = ["📦", "✨", "📅", "✉️", "✅", "🎉"];

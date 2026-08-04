@@ -26,7 +26,8 @@ const Label = styled.span`
 const Title = styled.h2`
   font-family: var(--font-syne), sans-serif;
   font-size: clamp(1.6rem, 4vw, 2.5rem);
-  font-weight: 800;
+  font-weight: 700;
+  line-height: 1.2;
   line-height: 1.15;
   color: var(--text);
   margin-bottom: 10px;

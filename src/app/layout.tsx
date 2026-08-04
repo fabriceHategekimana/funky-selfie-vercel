@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Syne, DM_Sans } from "next/font/google";
 import "./globals.css";
 import PromoBanner from "@/components/PromoBanner";
@@ -34,6 +34,12 @@ const dmSans = DM_Sans({
   variable: "--font-dm-sans",
   display: "swap",
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#0d1b1e",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.funkyselfie.ch"),
@@ -124,6 +130,9 @@ export default async function RootLayout({
   return (
     <html lang="fr">
       <body className={`${syne.variable} ${dmSans.variable} antialiased`}>
+        <noscript>
+          <style>{`.fade-up { opacity: 1 !important; transform: none !important; }`}</style>
+        </noscript>
         <StyledComponentsRegistry>
           <LanguageProvider>
             <PromoProvider value={promo}>
