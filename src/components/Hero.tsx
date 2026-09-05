@@ -323,8 +323,15 @@ const Glow = styled.div`
 const BOOTHS = ["booth-1.png", "booth-2.png", "booth-3.png", "booth-4.png"];
 const BOOTH_ORDER = [0, 3, 1, 2];
 
-export default function Hero() {
+type HeroProps = {
+  title?: string;
+  subtitle?: string;
+};
+
+export default function Hero({ title, subtitle }: HeroProps) {
   const { t } = useLanguage();
+  const heading = title ?? t.heroTitle;
+  const sub = subtitle ?? t.heroSub;
   const [pos, setPos] = useState(0);
   // Rotation désactivée sur mobile : évite 4 calques mix-blend-mode superposés
   // en compositing permanent et le téléchargement des 3 images inutilisées.
@@ -362,8 +369,8 @@ export default function Hero() {
       <Inner>
         <Content>
           <Badge>{t.heroBadge}</Badge>
-          <Title dangerouslySetInnerHTML={{ __html: t.heroTitle }} />
-          <Sub>{t.heroSub}</Sub>
+          <Title dangerouslySetInnerHTML={{ __html: heading }} />
+          <Sub>{sub}</Sub>
           <Btns>
             <BtnPrimary href="#formules">{t.heroBtn1}</BtnPrimary>
             <BtnSecondary href="#comment">{t.heroBtn2}</BtnSecondary>

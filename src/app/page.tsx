@@ -7,12 +7,18 @@ import Pourquoi from "@/components/Pourquoi";
 import Events from "@/components/Events";
 import Contact from "@/components/Contact";
 import Faq from "@/components/Faq";
+import { sanityFetch } from "@/sanity/lib/live";
+import { heroQuery } from "@/sanity/lib/queries";
 
 // Ordre validé et définitif (brief §1.1) — ne rien déplacer.
-export default function Home() {
+export default async function Home() {
+  const { data } = await sanityFetch({
+    query: heroQuery,
+  });
+
   return (
     <>
-      <Hero />
+      <Hero title={data?.title} subtitle={data?.subtitle} />
       <Formules />
       <Comment />
       <Features />
