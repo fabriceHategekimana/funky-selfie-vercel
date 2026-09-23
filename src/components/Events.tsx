@@ -142,13 +142,16 @@ const BtnPrimary = styled.a`
   }
 `;
 
+// Photos disponibles dans public/images/v9 (event-1.jpg … event-9.jpg).
+const EVENT_PHOTOS = 9;
+
 export default function Events() {
   const { t } = useLanguage();
   const [ref, inView] = useInView<HTMLDivElement>();
   // 9 images uniques ; dupliquées pour une boucle sans couture (translateX -50%).
   const cards = t.eventCards.map((c, i) => ({
     ...c,
-    src: `/images/v9/event-${i + 1}.jpg`,
+    src: `/images/v9/event-${(i % EVENT_PHOTOS) + 1}.jpg`,
     magenta: i % 2 === 0,
   }));
   const loop = [...cards, ...cards];

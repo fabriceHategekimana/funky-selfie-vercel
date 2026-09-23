@@ -2,6 +2,7 @@
 
 import styled from "styled-components";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useSite } from "@/contexts/SiteContext";
 
 const Section = styled.section`
   background: var(--white);
@@ -109,10 +110,9 @@ const BtnPrimary = styled.a`
   }
 `;
 
-const EMAIL = "hello@funkyselfie.ch";
-
 export default function Contact() {
   const { t } = useLanguage();
+  const { contactEmail: EMAIL } = useSite();
 
   return (
     <Section id="contact">

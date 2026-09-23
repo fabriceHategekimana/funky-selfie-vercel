@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "section": "node scripts/html-to-section.mjs"
+    "section": "node scripts/html-to-section.mjs",
+    "seed:content": "sanity exec scripts/seed-sanity-content.ts --with-user-token"
   },
   "dependencies": {
     "@sanity/image-url": "^1.2.0",

@@ -13,9 +13,16 @@ import StyledComponentsRegistry from "@/lib/StyledComponentsRegistry";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { PromoProvider } from "@/contexts/PromoContext";
 import { ConsentProvider } from "@/contexts/ConsentContext";
+import { SiteProvider } from "@/contexts/SiteContext";
 import { sanityFetch } from "@/sanity/lib/live";
-import { promoQuery } from "@/sanity/lib/queries";
+import { promoQuery, siteTextQuery } from "@/sanity/lib/queries";
 import { resolvePromo, type PromoSettings } from "@/lib/promo";
+import {
+  buildConfigTranslations,
+  buildSettings,
+  buildTranslations,
+  type SiteTextData,
+} from "@/lib/siteText";
 
 // Recalcule l'état de la promo (notamment l'activation par dates) au moins
 // toutes les 30 min, sans redéploiement.
@@ -124,8 +131,15 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { data } = (await sanityFetch({ query: promoQuery })) as { data: PromoSettings };
-  const promo = resolvePromo(data);
+  const [{ data: promoData }, { data: textData }] = await Promise.all([
+    sanityFetch({ query: promoQuery }) as Promise<{ data: PromoSettings }>,
+    sanityFetch({ query: siteTextQuery }) as Promise<{ data: SiteTextData }>,
+  ]);
+  const promo = resolvePromo(promoData);
+  // Textes Sanity fusionnés avec ceux de src/locales (repli champ par champ).
+  const translations = buildTranslations(textData);
+  const configTranslations = buildConfigTranslations(textData);
+  const settings = buildSettings(textData);
 
   return (
     <html lang="fr">
@@ -134,20 +148,25 @@ export default async function RootLayout({
           <style>{`.fade-up { opacity: 1 !important; transform: none !important; }`}</style>
         </noscript>
         <StyledComponentsRegistry>
-          <LanguageProvider>
-            <PromoProvider value={promo}>
-              <ConsentProvider>
-                <JsonLd />
-                <PromoBanner />
-                <Navbar />
-                <main>{children}</main>
-                <Footer />
-                <CookieBanner />
-                <ScrollReveal />
-                <SanityLive />
-                <Analytics />
-              </ConsentProvider>
-            </PromoProvider>
+          <LanguageProvider
+            translations={translations}
+            configTranslations={configTranslations}
+          >
+            <SiteProvider value={settings}>
+              <PromoProvider value={promo}>
+                <ConsentProvider>
+                  <JsonLd t={translations.fr} settings={settings} />
+                  <PromoBanner />
+                  <Navbar />
+                  <main>{children}</main>
+                  <Footer />
+                  <CookieBanner />
+                  <ScrollReveal />
+                  <SanityLive />
+                  <Analytics />
+                </ConsentProvider>
+              </PromoProvider>
+            </SiteProvider>
           </LanguageProvider>
         </StyledComponentsRegistry>
       </body>

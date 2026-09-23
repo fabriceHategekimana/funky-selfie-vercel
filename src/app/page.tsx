@@ -7,18 +7,13 @@ import Pourquoi from "@/components/Pourquoi";
 import Events from "@/components/Events";
 import Contact from "@/components/Contact";
 import Faq from "@/components/Faq";
-import { sanityFetch } from "@/sanity/lib/live";
-import { heroQuery } from "@/sanity/lib/queries";
 
 // Ordre validé et définitif (brief §1.1) — ne rien déplacer.
-export default async function Home() {
-  const { data } = await sanityFetch({
-    query: heroQuery,
-  });
-
+// Les textes viennent de Sanity via LanguageProvider (cf. src/app/layout.tsx).
+export default function Home() {
   return (
     <>
-      <Hero title={data?.title} subtitle={data?.subtitle} />
+      <Hero />
       <Formules />
       <Comment />
       <Features />

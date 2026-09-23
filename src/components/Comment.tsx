@@ -170,14 +170,6 @@ const ICONS = ["📦", "✨", "📅", "✉️", "✅", "🎉"];
 
 export default function Comment() {
   const { t } = useLanguage();
-  const steps = [
-    { t: t.s1t, d: t.s1d },
-    { t: t.s2t, d: t.s2d },
-    { t: t.s3t, d: t.s3d },
-    { t: t.s4t, d: t.s4d },
-    { t: t.s5t, d: t.s5d },
-    { t: t.s6t, d: t.s6d },
-  ];
 
   return (
     <Wrap id="comment">
@@ -192,9 +184,9 @@ export default function Comment() {
           <Sub>{t.commentSub}</Sub>
         </Header>
         <Track>
-          {steps.map((s, i) => (
+          {t.steps.map((s, i) => (
             <Step key={i} className="fade-up">
-              <Num>{ICONS[i]}</Num>
+              <Num>{ICONS[i % ICONS.length]}</Num>
               <div>
                 <StepTitle>{s.t}</StepTitle>
                 <StepDesc>{s.d}</StepDesc>

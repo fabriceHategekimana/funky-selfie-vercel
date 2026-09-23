@@ -149,7 +149,7 @@ export default function Features() {
         <List>
           {t.features.map((f, i) => (
             <Item key={i} className="fade-up">
-              <Icon>{ICONS[i]}</Icon>
+              <Icon>{ICONS[i % ICONS.length]}</Icon>
               <div>
                 <ItemTitle>{f.t}</ItemTitle>
                 <ItemDesc>{f.d}</ItemDesc>

@@ -5,7 +5,6 @@ import Image from "next/image";
 import styled from "styled-components";
 import { applyPromo, type ResolvedPromo } from "@/lib/promo";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { configTranslations } from "@/locales/configTranslations";
 
 type OptId = "cadre" | "fond" | "green" | "bulles" | "livreor" | "heure" | "impr";
 type FmtId = "f1" | "f2" | "f4";
@@ -50,8 +49,7 @@ export default function ConfiguratorPanel({
   selectedId: string;
   promo: ResolvedPromo;
 }) {
-  const { lang, t } = useLanguage();
-  const c = configTranslations[lang];
+  const { t, c } = useLanguage();
 
   const [selectedOpts, setSelectedOpts] = useState<OptId[]>([]);
   const [selectedFmt, setSelectedFmt] = useState<FmtId | null>(null);

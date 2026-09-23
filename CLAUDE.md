@@ -14,7 +14,13 @@ npm run build     # Production build — also runs TypeScript checks
 npm run start     # Serve production build
 npm run lint      # ESLint (flat config, eslint 9)
 npm run section path/to/file.html [ComponentName]  # Convert standalone HTML → styled-components section
+npm run seed:content              # Pousse les textes de src/locales dans Sanity (documents manquants uniquement)
+npm run seed:content -- --force   # Idem, mais écrase les documents déjà remplis
+npm run seed:content -- --dry-run # Affiche les documents sans rien écrire
+npx sanity schema validate        # Vérifie les schémas du Studio
 ```
+
+`seed:content` passe par `sanity exec --with-user-token` : il faut être connecté (`npx sanity login`) ou fournir `SANITY_AUTH_TOKEN`.
 
 No test framework is configured. Validate changes with `npm run build` (catches TypeScript/compilation errors) and `npm run lint`.
 
@@ -34,7 +40,7 @@ No test framework is configured. Validate changes with `npm run build` (catches 
 
 ## Architecture
 
-Single-page site: all sections are composed in `src/app/page.tsx`. The layout (`src/app/layout.tsx`) handles metadata/SEO and wraps with `Header`/`Footer`.
+Single-page site: all sections are composed in `src/app/page.tsx`. The layout (`src/app/layout.tsx`) handles metadata/SEO, fetches le contenu Sanity et enveloppe la page avec `Navbar`/`Footer` et les providers (`LanguageProvider`, `SiteProvider`, `PromoProvider`, `ConsentProvider`).
 
 Components are **server components by default**. Only add `"use client"` when the component uses browser APIs, hooks, or event handlers. styled-components components always require `"use client"`.
 
@@ -45,35 +51,32 @@ Current section order (recodé d'après le prototype `funkyselfie-final-v9.html`
 
 `PromoBanner`, `Navbar`, `Footer` et `CookieBanner` vivent dans `layout.tsx` (autour du `<main>`), enveloppés par `LanguageProvider`.
 
-### Internationalisation (FR / EN / DE)
+### Internationalisation (FR / EN / DE) & contenu éditable
 
-- Textes dans `src/locales/translations.ts` (objet `translations[lang]`, type `Translation`) — portés depuis le prototype.
-- `src/contexts/LanguageContext.tsx` (`"use client"`) : état `lang`, persistance `localStorage` clé `fs_lang`, met à jour `document.documentElement.lang`. Hook `useLanguage()` → `{ lang, setLang, t }`.
-- Les sections du prototype sont des **client components styled-components** qui lisent `useLanguage()`. Elles n'utilisent **pas** Sanity (le contenu est statique/traduit). Les composants Sanity restent dans le repo mais ne sont plus câblés.
+Tous les textes de la page sont **éditables dans Sanity**, sans que les composants n'aient à connaître Sanity :
+
+1. `src/locales/translations.ts` (type `Translation`) et `src/locales/configTranslations.ts` (type `ConfigTranslation`) restent la **référence** : ce sont les valeurs par défaut, celles qui s'affichent tant que Sanity est vide.
+2. `layout.tsx` (server) fait **une seule requête** (`siteTextQuery`) et appelle `buildTranslations` / `buildConfigTranslations` / `buildSettings` (`src/lib/siteText.ts`), qui fusionnent Sanity et les valeurs par défaut **champ par champ** (une chaîne vide dans le Studio = repli sur le code, jamais de section vide).
+3. Le résultat (`Record<Lang, Translation>`) est passé en props à `LanguageProvider`, qui expose `useLanguage()` → `{ lang, setLang, t, c }`. Les sections lisent `t`/`c` comme avant : **ajouter un texte éditable = ajouter un champ au schéma + une ligne dans `siteText.ts`**, rien d'autre.
+4. `SiteProvider` (`src/contexts/SiteContext.tsx`) porte les valeurs non traduites (e-mail de contact, liens réseaux sociaux, copyright) ; `useSite()` les lit dans `Contact.tsx` et `Footer.tsx`.
+
+- Les listes (`trust`, `steps`, `features`, `faqs`, `eventCards`, features des formules) sont des **tableaux** : Déborah peut en ajouter/supprimer depuis le Studio. Les icônes/photos associées sont cycliques côté code (`ICONS[i % ICONS.length]`, `event-${(i % 9) + 1}.jpg`).
+- `LanguageContext` (`"use client"`) : état `lang`, persistance `localStorage` clé `fs_lang`, met à jour `document.documentElement.lang`. Premier rendu toujours en `fr` (évite un mismatch d'hydratation).
+- `JsonLd.tsx` reçoit `translations.fr` + les réglages : la FAQ structurée et les liens `sameAs` suivent automatiquement le contenu édité.
 - `ScrollReveal.tsx` : IntersectionObserver unique qui ajoute `.visible` aux `.fade-up` (règles dans `globals.css`).
 - Images du prototype extraites en base64 → `public/images/v9/` (voir `scripts/extract-v9-images.mjs`). OG image générée par `scripts/make-og-image.mjs`.
 
-### Client components
-- `Header.tsx` — Sticky nav with mobile hamburger menu
-- `HeroCarousel.tsx` — Image carousel (3 photos, 5 s interval, opacity transitions)
-- `WhyUs.tsx` — Bento-grid "Pourquoi FunkySelfie" section; 6 cards (stat, dark, regular variants); static data; styled-components
-- `HowItWorks.tsx` — Dark section with 6-step horizontal track (desktop) / vertical list (mobile); static data; styled-components
-- `Configurator.tsx` — Interactive quote builder with package selection, options, and form (CHF 499 / 799 / 1500)
-- `ContactCard.tsx` — Presentation-only contact card (email + CTA button); props-driven; styled-components
+### Composants en production
 
-### Server components
-- `Hero.tsx` — Fetches hero data from Sanity (title, subtitle, CTA), renders `HeroCarousel`
-- `Contact.tsx` — Fetches `contactSection` from Sanity, renders `ContactCard` with fallback data
-- `Footer.tsx` — Footer with tagline, SEO text, and copyright from Sanity
+Tous les composants de sections sont des **client components styled-components** qui lisent `useLanguage()` ; aucun ne requête Sanity directement.
 
-### Unused / archived components (files exist, not wired into `page.tsx`)
-- `Features.tsx` — Feature cards grid (Sanity) — replaced by `WhyUs`
-- `Services.tsx` — Services grid with images (Sanity + `urlFor()`) — replaced by `WhyUs`
-- `Testimonials.tsx` — Testimonials grid (Sanity)
-- `Faq.tsx` / `FaqAccordion.tsx` — FAQ section (Sanity)
-- `ArcPhotobooth.tsx` — Arc-SVG "comment ça marche" variant — replaced by `HowItWorks`
-- `CardsMockup.tsx` — Grid "pourquoi FunkySelfie" variant — replaced by `WhyUs`
-- `Offers.tsx` — Offer cards — replaced by `Configurator`
+- Page (`page.tsx`) : `Hero`, `Formules` (+ `ConfiguratorPanel`), `Comment`, `Features`, `Prints`, `Pourquoi`, `Events`, `Contact`, `Faq`
+- Layout : `PromoBanner`, `Navbar`, `Footer`, `CookieBanner`, `ScrollReveal`, `Analytics`, `JsonLd` (server)
+- `/privacy` : `PrivacyContent`
+
+### Composants archivés (fichiers présents, non câblés)
+
+`Header.tsx`, `HeroCarousel.tsx`, `WhyUs.tsx`, `HowItWorks.tsx`, `ContactCard.tsx`, `FaqAccordion.tsx`, `ArcPhotobooth.tsx`, `CardsMockup.tsx`, `Offers.tsx` — variantes antérieures au prototype v9, conservées pour référence. Ils ne lisent pas le contenu Sanity ; les supprimer n'aurait aucun impact sur le site.
 
 ### API routes
 
@@ -86,15 +89,30 @@ Current section order (recodé d'après le prototype `funkyselfie-final-v9.html`
 
 - **Studio**: Mounted at `/studio` (`src/app/studio/[[...tool]]/page.tsx`)
 - **Config**: `sanity.config.ts` at project root (Studio client), `sanity.cli.ts` for CLI
-- **Schemas** (`src/sanity/schemaTypes/`): `heroSection`, `feature`, `service`, `testimonial`, `faqItem`, `contactSection`, `footerSection`, `promoSettings`
-- **Queries**: Defined in `src/sanity/lib/queries.ts`, fetched via `sanityFetch` from `src/sanity/lib/live.ts`
-- **Image URLs**: `urlFor(source)` exported from `src/sanity/lib/image.ts`
-- **Singleton documents** (fixed IDs in `src/sanity/structure.ts`):
-  - `heroSection`: `a6d56e4f-a429-4e53-a7b9-bb4640fbb087`
-  - `contactSection`: `3427fda4-79ec-4e73-9c02-851604367ee9`
-  - `footerSection`: `2c653873-5542-4c48-a0af-0272f370f63b`
-  - `promoSettings`: `promoSettings`
-- **Live queries**: `SanityLive` component in `layout.tsx` enables real-time content updates
+- **Traduction au niveau du champ** : `localeString` / `localeText` (`src/sanity/schemaTypes/locale.ts`) = objet `{ fr, en, de }`. Helpers `locString()` / `locText()` / `singleton()` dans `schemaTypes/helpers.ts`.
+- **Tous les documents sont des singletons**, un par section, avec un `_id` **fixe et égal au nom du type** — d'où des requêtes non ambiguës `*[_id == "hero"][0]` :
+
+  | Document | Contenu |
+  | --- | --- |
+  | `hero` | badge, titre (`<em>` autorisé), sous-titre, 2 boutons, arguments ✓ |
+  | `formules` | surtitres, sous-titre promo/hors promo, note, 3 formules (nom, accroche, liste incluse) |
+  | `comment` | surtitre, titre, sous-titre, étapes |
+  | `features` | « Le Funky » : surtitre, titre, caractéristiques |
+  | `prints` | surtitre, titre, sous-titre |
+  | `pourquoi` | bento : 4 cartes + 2 chiffres (48h / 100%) |
+  | `events` | surtitre, titre, cartes du carrousel |
+  | `contact` | surtitre, titre, sous-titre, note, bouton, **adresse e-mail** |
+  | `faq` | surtitre, titre, questions/réponses (alimente aussi le JSON-LD) |
+  | `nav` | liens du menu, bouton Réserver, bandeau promo, bandeau cookies |
+  | `configurateur` | libellés des options, formats, formulaire, messages (groupés par onglet) |
+  | `footer` | copyright, liens Instagram / TikTok / LinkedIn |
+  | `promoSettings` | remise (cf. section Promo) |
+
+- **Ce qui reste dans le code** (non éditable) : les prix (`PLANS` dans `Formules.tsx`, `PACKAGES`/`OPTIONS` dans `ConfiguratorPanel.tsx`), les images, les icônes/emojis et les ancres de navigation.
+- **Queries**: `siteTextQuery` (tout le contenu en une requête) et `promoQuery` dans `src/sanity/lib/queries.ts`, via `sanityFetch` (`src/sanity/lib/live.ts`).
+- **Image URLs**: `urlFor(source)` exported from `src/sanity/lib/image.ts` (plus utilisé par les sections actuelles).
+- **Live queries**: `SanityLive` in `layout.tsx` ; `export const revalidate = 1800` borne la fraîcheur à 30 min au pire.
+- **Amorçage** : `npm run seed:content` (`scripts/seed-sanity-content.ts`) crée les 12 documents à partir de `src/locales`, pour que le Studio affiche le texte réel plutôt que des champs vides. Idempotent (`createIfNotExists`) sauf avec `--force`.
 
 ### Système de promo (remise configurable)
 
@@ -105,7 +123,7 @@ Source unique de vérité pour toute remise du site, pilotée par le singleton S
 
 ### Configurateur (§2 du brief)
 
-Fusionné dans la section **Formules** : les cartes sont cliquables (« Choisir » → `setSelectedPkg` + scroll), et `ConfiguratorPanel.tsx` (options avec masquage par formule, format de collage, message 40 car., total, formulaire 3+2 champs, envoi Resend) se déplie sous la grille. Textes FR/EN/DE dans `src/locales/configTranslations.ts` (séparé des chaînes du prototype). Le v9 lui-même ne contient pas de configurateur.
+Fusionné dans la section **Formules** : les cartes sont cliquables (« Choisir » → `setSelectedPkg` + scroll), et `ConfiguratorPanel.tsx` (options avec masquage par formule, format de collage, message 40 car., total, formulaire 3+2 champs, envoi Resend) se déplie sous la grille. Textes FR/EN/DE par défaut dans `src/locales/configTranslations.ts`, éditables via le document Sanity `configurateur` ; ils sont lus par `useLanguage().c`. **Les prix restent dans le code** (`PACKAGES`, `OPTIONS`).
 
 ### Cookies & Analytics (§6 — LPD suisse)
 
@@ -146,36 +164,42 @@ For manual conversion or fine-tuning:
 src/
   app/
     globals.css          # Tailwind imports + custom theme + animations
-    layout.tsx           # Root layout (metadata, SEO, Header/Footer, StyledComponentsRegistry, fonts)
-    page.tsx             # Home page: Hero → WhyUs → HowItWorks → Configurator → Contact
+    layout.tsx           # Root layout (metadata, SEO, fetch Sanity, providers, Navbar/Footer, fonts)
+    page.tsx             # Home page: Hero → Formules → Comment → Features → Prints → Pourquoi → Events → Contact → Faq
     robots.ts            # robots.txt generation
     sitemap.ts           # sitemap.xml generation
     studio/[[...tool]]/  # Sanity Studio mounted route
     api/send-quote/      # API route for quote form submissions (Resend)
   components/
-    Header.tsx           # Sticky nav with mobile hamburger menu [client]
-    Hero.tsx             # Server component fetching hero data from Sanity [server]
-    HeroCarousel.tsx     # Image carousel hero section [client]
-    WhyUs.tsx            # Bento-grid "Pourquoi FunkySelfie" — static data [client, styled-components]
-    HowItWorks.tsx       # 6-step dark section — static data [client, styled-components]
-    Configurator.tsx     # Interactive quote builder (CHF 499 / 799 / 1500) [client, styled-components]
-    Contact.tsx          # Fetches contactSection from Sanity, renders ContactCard [server]
-    ContactCard.tsx      # Email + CTA card — props-driven [client, styled-components]
-    Footer.tsx           # Footer with Sanity data [server]
-    JsonLd.tsx           # Structured data (JSON-LD schemas) [server]
-    # ── Archived (not in page.tsx) ────────────────────────────────────────
-    Features.tsx         # Feature cards grid (Sanity) [server] — replaced by WhyUs
-    Services.tsx         # Services grid with images (Sanity + urlFor) [server] — replaced by WhyUs
-    Testimonials.tsx     # Testimonials grid (Sanity) [server]
-    Faq.tsx              # FAQ section (Sanity) [server]
-    FaqAccordion.tsx     # FAQ accordion [client]
-    ArcPhotobooth.tsx    # Arc-SVG "comment ça marche" variant [client, styled-components] — replaced by HowItWorks
-    CardsMockup.tsx      # Grid "pourquoi FunkySelfie" variant [client, styled-components] — replaced by WhyUs
-    Offers.tsx           # Offer cards [client] — replaced by Configurator
+    # ── Sections de la page (toutes [client, styled-components], textes via useLanguage) ──
+    Hero.tsx             # Hero : badge, titre HTML, boutons, réassurance, rotation photobooth
+    Formules.tsx         # 3 formules cliquables + prix (promo) ; monte ConfiguratorPanel
+    ConfiguratorPanel.tsx# Options, format, message, total, formulaire → /api/send-quote
+    Comment.tsx          # « Comment ça marche » : étapes sur fond photo sombre
+    Features.tsx         # « Le Funky » : caractéristiques du photobooth
+    Prints.tsx           # Carrousel des impressions
+    Pourquoi.tsx         # Bento « Pourquoi FunkySelfie »
+    Events.tsx           # Carrousel infini des types d'événements
+    Contact.tsx          # Carte contact (e-mail via useSite)
+    Faq.tsx              # Accordéon FAQ
+    # ── Layout ───────────────────────────────────────────────────────────
+    PromoBanner.tsx      # Bandeau promo défilant (masqué si promo inactive) [client]
+    Navbar.tsx           # Nav sticky + menu mobile + sélecteur de langue [client]
+    Footer.tsx           # Copyright + réseaux sociaux (useSite) [client]
+    CookieBanner.tsx     # Bandeau de consentement (LPD) [client]
+    ScrollReveal.tsx     # IntersectionObserver pour .fade-up [client]
+    Analytics.tsx        # GA4 conditionné au consentement [client]
+    JsonLd.tsx           # Données structurées, dérivées du contenu édité [server]
+    PrivacyContent.tsx   # Contenu de /privacy [client]
+    # ── Archivés (non câblés) ────────────────────────────────────────────
+    Header.tsx  HeroCarousel.tsx  WhyUs.tsx  HowItWorks.tsx  ContactCard.tsx
+    FaqAccordion.tsx  ArcPhotobooth.tsx  CardsMockup.tsx  Offers.tsx
   lib/
     StyledComponentsRegistry.tsx  # SSR registry for styled-components (wraps app in layout.tsx)
+    siteText.ts          # Fusion Sanity ↔ valeurs par défaut (buildTranslations…)
+    promo.ts             # resolvePromo / applyPromo
   sanity/
-    schemaTypes/         # Sanity schemas
+    schemaTypes/         # Schémas du Studio (locale.ts, helpers.ts, sections/*.ts)
     lib/
       client.ts          # Sanity client (useCdn: true, browser-safe, no token)
       image.ts           # urlFor() image URL builder
@@ -183,8 +207,17 @@ src/
       queries.ts         # GROQ queries
     env.ts               # Sanity env variables
     structure.ts         # Studio structure (singletons + list items)
+  contexts/
+    LanguageContext.tsx  # lang + textes fusionnés (t, c)
+    SiteContext.tsx      # e-mail, réseaux sociaux, copyright
+    PromoContext.tsx     # remise résolue
+    ConsentContext.tsx   # consentement cookies
+  locales/
+    translations.ts      # Textes par défaut FR/EN/DE de la page
+    configTranslations.ts# Textes par défaut FR/EN/DE du configurateur
 scripts/
   html-to-section.mjs    # HTML → styled-components section converter (npm run section)
+  seed-sanity-content.ts # Amorçage du Studio depuis src/locales (npm run seed:content)
 public/
   images/               # All static images served from /images/*
     favicon-32.png      # Browser tab icon (32×32)

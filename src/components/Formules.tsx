@@ -5,7 +5,6 @@ import styled from "styled-components";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePromo } from "@/contexts/PromoContext";
 import { applyPromo } from "@/lib/promo";
-import { configTranslations } from "@/locales/configTranslations";
 import ConfiguratorPanel from "./ConfiguratorPanel";
 
 const Section = styled.section`
@@ -259,9 +258,8 @@ const PLANS = [
 ] as const;
 
 export default function Formules() {
-  const { t, lang } = useLanguage();
+  const { t, c } = useLanguage();
   const promo = usePromo();
-  const c = configTranslations[lang];
   const [selectedPkg, setSelectedPkg] = useState<string | null>(null);
 
   const names = [t.basicName, t.premiumName, t.prestigeName];
@@ -324,9 +322,7 @@ export default function Formules() {
           );
         })}
       </Grid>
-      <Note>
-        Déplacement CHF 1.00/km A/R depuis Bienne · Options supplémentaires dans le configurateur
-      </Note>
+      <Note>{t.formulesNote}</Note>
 
       {selectedPkg && <ConfiguratorPanel selectedId={selectedPkg} promo={promo} />}
     </Section>

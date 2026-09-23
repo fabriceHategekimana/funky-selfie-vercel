@@ -1,46 +1,38 @@
 import type { StructureResolver } from "sanity/structure";
-import { HomeIcon, EnvelopeIcon, DocumentIcon, TagIcon } from "@sanity/icons";
+import { schema } from "./schemaTypes";
 
-const SINGLETONS = ["heroSection", "contactSection", "footerSection", "promoSettings"];
+// Tous les documents du Studio sont des singletons : un seul exemplaire, ouvert
+// directement depuis le menu. L'_id est fixe et identique au nom du type, ce qui
+// permet aux requêtes GROQ de cibler `*[_id == "hero"][0]` sans ambiguïté.
+const SECTIONS = [
+  "hero",
+  "formules",
+  "comment",
+  "features",
+  "prints",
+  "pourquoi",
+  "events",
+  "contact",
+  "faq",
+] as const;
 
-export const structure: StructureResolver = (S) =>
-  S.list()
-    .title("Contenu")
+const GLOBALS = ["nav", "configurateur", "footer", "promoSettings"] as const;
+
+const titleOf = (name: string) =>
+  schema.types.find((t) => t.name === name)?.title ?? name;
+
+export const structure: StructureResolver = (S) => {
+  const item = (name: string) =>
+    S.listItem()
+      .id(name)
+      .title(titleOf(name))
+      .child(S.document().schemaType(name).documentId(name).title(titleOf(name)));
+
+  return S.list()
+    .title("Contenu du site")
     .items([
-      S.listItem()
-        .title("Section Hero")
-        .icon(HomeIcon)
-        .child(
-          S.document()
-            .schemaType("heroSection")
-            .documentId("a6d56e4f-a429-4e53-a7b9-bb4640fbb087")
-        ),
-      S.listItem()
-        .title("Section Contact")
-        .icon(EnvelopeIcon)
-        .child(
-          S.document()
-            .schemaType("contactSection")
-            .documentId("3427fda4-79ec-4e73-9c02-851604367ee9")
-        ),
-      S.listItem()
-        .title("Footer")
-        .icon(DocumentIcon)
-        .child(
-          S.document()
-            .schemaType("footerSection")
-            .documentId("2c653873-5542-4c48-a0af-0272f370f63b")
-        ),
-      S.listItem()
-        .title("Promo")
-        .icon(TagIcon)
-        .child(
-          S.document()
-            .schemaType("promoSettings")
-            .documentId("promoSettings")
-        ),
+      ...SECTIONS.map(item),
       S.divider(),
-      ...S.documentTypeListItems().filter(
-        (item) => !SINGLETONS.includes(item.getId() ?? "")
-      ),
+      ...GLOBALS.map(item),
     ]);
+};

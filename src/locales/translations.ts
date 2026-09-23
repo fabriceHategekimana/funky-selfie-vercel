@@ -11,10 +11,7 @@ export type Translation = {
   heroSub: string;
   heroBtn1: string;
   heroBtn2: string;
-  trust1: string;
-  trust2: string;
-  trust3: string;
-  trust4: string;
+  trust: string[];
   formulesLabel: string;
   formulesTitle: string;
   formulesPromo: string; // contient le placeholder {pct}
@@ -28,15 +25,11 @@ export type Translation = {
   prestigeName: string;
   prestigeTag: string;
   chooseBtn: string;
+  formulesNote: string;
   commentLabel: string;
   commentTitle: string;
   commentSub: string;
-  s1t: string; s1d: string;
-  s2t: string; s2d: string;
-  s3t: string; s3d: string;
-  s4t: string; s4d: string;
-  s5t: string; s5d: string;
-  s6t: string; s6d: string;
+  steps: { t: string; d: string }[];
   printsLabel: string;
   printsTitle: string;
   printsSub: string;
@@ -82,7 +75,12 @@ export const translations: Record<Lang, Translation> = {
     heroSub: "Location de photobooth en Suisse. Livré, installé, géré de A à Z. Vos invités repartent avec leurs photos.",
     heroBtn1: "Voir les formules →",
     heroBtn2: "▶ Comment ça marche",
-    trust1: "Devis sous 48h", trust2: "Sans engagement", trust3: "Pick-up gratuit", trust4: "100% personnalisable",
+    trust: [
+      "Devis sous 48h",
+      "Sans engagement",
+      "Pick-up gratuit",
+      "100% personnalisable",
+    ],
     formulesLabel: "Nos formules",
     formulesTitle: "Une formule pour chaque événement",
     formulesPromo: "{pct}% de réduction appliqués ce mois-ci.",
@@ -93,15 +91,18 @@ export const translations: Record<Lang, Translation> = {
     premiumName: "Premium", premiumTag: "Votre marque sur chaque photo.",
     prestigeName: "Prestige", prestigeTag: "Tout sur mesure. Zéro compromis.",
     chooseBtn: "Choisir",
+    formulesNote: "Déplacement CHF 1.00/km A/R depuis Bienne · Options supplémentaires dans le configurateur",
     commentLabel: "Comment ça marche",
     commentTitle: "Simple. Rapide. Sans stress.",
     commentSub: "De la réservation au jour J, on vous accompagne à chaque étape.",
-    s1t: "Choisissez votre formule", s1d: "Basic, Premium ou Prestige",
-    s2t: "Personnalisez", s2d: "Options et format photo. Prix en temps réel.",
-    s3t: "Indiquez votre date", s3d: "3 champs seulement. Rapide.",
-    s4t: "Recevez votre devis", s4d: "Sous 48h. Prix ferme, sans surprise.",
-    s5t: "Confirmez", s5d: "Acompte 50% pour bloquer votre date.",
-    s6t: "Jour J", s6d: "On arrive, on installe. Vous profitez.",
+    steps: [
+      { t: "Choisissez votre formule", d: "Basic, Premium ou Prestige" },
+      { t: "Personnalisez", d: "Options et format photo. Prix en temps réel." },
+      { t: "Indiquez votre date", d: "3 champs seulement. Rapide." },
+      { t: "Recevez votre devis", d: "Sous 48h. Prix ferme, sans surprise." },
+      { t: "Confirmez", d: "Acompte 50% pour bloquer votre date." },
+      { t: "Jour J", d: "On arrive, on installe. Vous profitez." },
+    ],
     printsLabel: "Vos souvenirs",
     printsTitle: "Ne partez pas les mains vides",
     printsSub: "Une impression instantanée en quelques secondes.",
@@ -161,7 +162,12 @@ export const translations: Record<Lang, Translation> = {
     heroSub: "Photobooth hire in Switzerland. Delivered, installed and managed from start to finish. Your guests leave with their photos in hand.",
     heroBtn1: "View packages →",
     heroBtn2: "▶ How it works",
-    trust1: "Quote within 48h", trust2: "No commitment", trust3: "Free pick-up", trust4: "100% customisable",
+    trust: [
+      "Quote within 48h",
+      "No commitment",
+      "Free pick-up",
+      "100% customisable",
+    ],
     formulesLabel: "Our packages",
     formulesTitle: "A package for every event",
     formulesPromo: "{pct}% discount applied this month.",
@@ -172,15 +178,18 @@ export const translations: Record<Lang, Translation> = {
     premiumName: "Premium", premiumTag: "Your brand on every single photo.",
     prestigeName: "Prestige", prestigeTag: "Fully bespoke. Absolutely no compromise.",
     chooseBtn: "Choose",
+    formulesNote: "Travel CHF 1.00/km return from Biel · Additional options in the configurator",
     commentLabel: "How it works",
     commentTitle: "Simple. Straightforward. Stress-free.",
     commentSub: "From your first enquiry to the big day, we take care of every detail.",
-    s1t: "Choose your package", s1d: "Basic, Premium or Prestige",
-    s2t: "Personalise", s2d: "Photo options and format. Pricing updated live.",
-    s3t: "Set your date", s3d: "Just 3 fields. That's it.",
-    s4t: "Receive your quote", s4d: "Within 48h. Fixed price, no hidden costs.",
-    s5t: "Confirm", s5d: "50% deposit to secure your date.",
-    s6t: "The big day", s6d: "We arrive, we set up. You sit back and enjoy.",
+    steps: [
+      { t: "Choose your package", d: "Basic, Premium or Prestige" },
+      { t: "Personalise", d: "Photo options and format. Pricing updated live." },
+      { t: "Set your date", d: "Just 3 fields. That's it." },
+      { t: "Receive your quote", d: "Within 48h. Fixed price, no hidden costs." },
+      { t: "Confirm", d: "50% deposit to secure your date." },
+      { t: "The big day", d: "We arrive, we set up. You sit back and enjoy." },
+    ],
     printsLabel: "Your memories",
     printsTitle: "Don't leave empty-handed",
     printsSub: "An instant print in your hands within seconds.",
@@ -240,7 +249,12 @@ export const translations: Record<Lang, Translation> = {
     heroSub: "Photobooth-Vermietung in der Schweiz. Geliefert, installiert und von A bis Z betreut. Ihre Gäste gehen mit ihren Fotos nach Hause.",
     heroBtn1: "Pakete ansehen →",
     heroBtn2: "▶ So funktioniert es",
-    trust1: "Offerte in 48h", trust2: "Unverbindlich", trust3: "Kostenlose Abholung", trust4: "100% individuell",
+    trust: [
+      "Offerte in 48h",
+      "Unverbindlich",
+      "Kostenlose Abholung",
+      "100% individuell",
+    ],
     formulesLabel: "Unsere Pakete",
     formulesTitle: "Ein Paket für jeden Anlass",
     formulesPromo: "{pct}% Rabatt – nur diesen Monat.",
@@ -251,15 +265,18 @@ export const translations: Record<Lang, Translation> = {
     premiumName: "Premium", premiumTag: "Ihre Marke auf jedem Foto.",
     prestigeName: "Prestige", prestigeTag: "Alles massgeschneidert. Ohne Kompromisse.",
     chooseBtn: "Auswählen",
+    formulesNote: "Anfahrt CHF 1.00/km Hin- und Rückfahrt ab Biel · Zusätzliche Optionen im Konfigurator",
     commentLabel: "So funktioniert es",
     commentTitle: "Einfach. Schnell. Stressfrei.",
     commentSub: "Von der Buchung bis zum grossen Tag sind wir an Ihrer Seite.",
-    s1t: "Paket auswählen", s1d: "Basic, Premium oder Prestige",
-    s2t: "Personalisieren", s2d: "Optionen und Fotoformat wählen. Preis in Echtzeit.",
-    s3t: "Datum angeben", s3d: "Nur 3 Felder. Dauert eine Minute.",
-    s4t: "Offerte erhalten", s4d: "Innert 48h. Fester Preis, keine versteckten Kosten.",
-    s5t: "Bestätigen", s5d: "50% Anzahlung zur Reservierung Ihres Datums.",
-    s6t: "Der grosse Tag", s6d: "Wir kommen, bauen alles auf. Sie geniessen.",
+    steps: [
+      { t: "Paket auswählen", d: "Basic, Premium oder Prestige" },
+      { t: "Personalisieren", d: "Optionen und Fotoformat wählen. Preis in Echtzeit." },
+      { t: "Datum angeben", d: "Nur 3 Felder. Dauert eine Minute." },
+      { t: "Offerte erhalten", d: "Innert 48h. Fester Preis, keine versteckten Kosten." },
+      { t: "Bestätigen", d: "50% Anzahlung zur Reservierung Ihres Datums." },
+      { t: "Der grosse Tag", d: "Wir kommen, bauen alles auf. Sie geniessen." },
+    ],
     printsLabel: "Ihre Erinnerungen",
     printsTitle: "Nehmen Sie eine Erinnerung mit nach Hause",
     printsSub: "Ein Sofortdruck in wenigen Sekunden.",

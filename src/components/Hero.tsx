@@ -323,15 +323,8 @@ const Glow = styled.div`
 const BOOTHS = ["booth-1.png", "booth-2.png", "booth-3.png", "booth-4.png"];
 const BOOTH_ORDER = [0, 3, 1, 2];
 
-type HeroProps = {
-  title?: string;
-  subtitle?: string;
-};
-
-export default function Hero({ title, subtitle }: HeroProps) {
+export default function Hero() {
   const { t } = useLanguage();
-  const heading = title ?? t.heroTitle;
-  const sub = subtitle ?? t.heroSub;
   const [pos, setPos] = useState(0);
   // Rotation désactivée sur mobile : évite 4 calques mix-blend-mode superposés
   // en compositing permanent et le téléchargement des 3 images inutilisées.
@@ -357,7 +350,6 @@ export default function Hero({ title, subtitle }: HeroProps) {
 
   const activeImg = isMobile ? 0 : BOOTH_ORDER[pos];
   const booths = isMobile ? BOOTHS.slice(0, 1) : BOOTHS;
-  const trust = [t.trust1, t.trust2, t.trust3, t.trust4];
 
   return (
     <Section id="accueil">
@@ -369,14 +361,14 @@ export default function Hero({ title, subtitle }: HeroProps) {
       <Inner>
         <Content>
           <Badge>{t.heroBadge}</Badge>
-          <Title dangerouslySetInnerHTML={{ __html: heading }} />
-          <Sub>{sub}</Sub>
+          <Title dangerouslySetInnerHTML={{ __html: t.heroTitle }} />
+          <Sub>{t.heroSub}</Sub>
           <Btns>
             <BtnPrimary href="#formules">{t.heroBtn1}</BtnPrimary>
             <BtnSecondary href="#comment">{t.heroBtn2}</BtnSecondary>
           </Btns>
           <Trust>
-            {trust.map((item, i) => (
+            {t.trust.map((item, i) => (
               <TrustItem key={i}>
                 <span>✓</span> {item}
               </TrustItem>
